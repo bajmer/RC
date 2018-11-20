@@ -1,0 +1,30 @@
+package model.enums.cards.mystery;
+
+public enum MysteryTreasureType {
+    TREASURE_MAP,
+    ANTIQUE_RAPIER,
+    AMULET_WITH_PORTRAIT_OF_BEAUTIFUL_LADY,
+    HERBAL_MIXTURE,
+    CEREMONIAL_BOWL,
+    BLANKETS,
+    BACKPACK,
+    OLD_MAP,
+    OLD_CLOTHES,
+    COMPASS,
+    PROTECTIVE_AMULET,
+    CAVE_WITH_FURS,
+    OLD_RIFLE,
+    CANDLES,
+    ROPES,
+    HAMMOCK,
+    BOXES,
+    CAPTAIN_STONES_SPYGLASS,
+    BOTTLE_OF_WINE,
+    WHIP,
+    CROCKS,
+    HATCHET,
+    SABRE,
+    BARREL,
+    HELMET,
+    GOLD
+}

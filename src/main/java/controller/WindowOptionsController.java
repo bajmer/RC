@@ -37,5 +37,6 @@ public class WindowOptionsController {
                 2);
 
         GameEngine gameEngine = new GameEngine(gameOptions);
+        gameEngine.play();
     }
 }

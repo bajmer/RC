@@ -1,6 +1,6 @@
 package model.board;
 
-import model.elements.decks.tiles.IslandTile;
+import model.elements.tiles.IslandTile;
 
 import java.util.Map;
 

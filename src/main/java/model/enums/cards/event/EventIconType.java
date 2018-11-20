@@ -1,7 +1,7 @@
 package model.enums.cards.event;
 
 public enum EventIconType {
-    NOTHING,
+    NONE,
     BOOK,
     BUILDING_ADVENTURE,
     RESOURCES_ADVENTURE,

@@ -1,14 +1,14 @@
 package model.decks;
 
-import model.elements.decks.cards.BeastCard;
-import model.elements.decks.cards.EventCard;
-import model.elements.decks.cards.InventionCard;
-import model.elements.decks.cards.adventure.BuildingAdventureCard;
-import model.elements.decks.cards.adventure.ExplorationAdventureCard;
-import model.elements.decks.cards.adventure.ResourcesAdventureCard;
-import model.elements.decks.cards.mystery.MysteryCard;
-import model.elements.decks.tiles.DiscoveryToken;
-import model.elements.decks.tiles.IslandTile;
+import model.elements.cards.BeastCard;
+import model.elements.cards.EventCard;
+import model.elements.cards.InventionCard;
+import model.elements.cards.adventure.BuildingAdventureCard;
+import model.elements.cards.adventure.ExplorationAdventureCard;
+import model.elements.cards.adventure.ResourcesAdventureCard;
+import model.elements.cards.mystery.MysteryCard;
+import model.elements.tiles.DiscoveryToken;
+import model.elements.tiles.IslandTile;
 
 import java.util.LinkedList;
 

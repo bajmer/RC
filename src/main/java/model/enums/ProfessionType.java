@@ -4,5 +4,6 @@ public enum ProfessionType {
     CARPENTER,
     COOK,
     EXPLORER,
-    SOLDIER
+    SOLDIER,
+    NONE
 }

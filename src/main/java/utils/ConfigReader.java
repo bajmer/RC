@@ -1,5 +1,13 @@
 package utils;
 
+import model.enums.ProfessionType;
+import model.enums.SpecialSkillType;
+import model.enums.TerrainType;
+import model.enums.cards.event.EventEffectType;
+import model.enums.cards.event.EventIconType;
+import model.enums.cards.event.ThreatActionType;
+import model.enums.cards.event.ThreatEffectType;
+import model.enums.elements.ResourceType;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -15,28 +23,58 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 public class ConfigReader {
-    private static Logger logger = LogManager.getLogger(ConfigReader.class);
+	private static Logger logger = LogManager.getLogger(ConfigReader.class);
 
-    public static String loadValue(String configName, String rowName, String colName) {
-        Properties prop = new Properties();
-        String value = null;
+	public static <T> T loadValue(Class<T> outputClass, String config, String row, String col) {
+		Properties prop = new Properties();
+		String stringValue = null;
 
-        try (InputStream inputStream = new FileInputStream("src/main/resources/config.properties")) {
-            prop.load(inputStream);
+		try (InputStream inputStream = new FileInputStream("src/main/resources/config.properties")) {
+			prop.load(inputStream);
 
-            BufferedReader reader = Files.newBufferedReader(Paths.get("src/main/resources/" + prop.getProperty(configName + "_CONFIG_FILE")));
-//			CSVParser parser = new CSVParser(reader, CSVFormat.newFormat(';').withHeader(prop.getProperty(configName + "_HEADERS")));
-            CSVParser parser = new CSVParser(reader, CSVFormat.newFormat(';').withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
-            for (CSVRecord record : parser) {
-                if (rowName.equals(record.get(0))) {
-                    value = record.get(colName);
-                    break;
-                }
-            }
-        } catch (IOException exception) {
-            logger.debug("Błąd wczytywania konfiguracji");
-        }
+			BufferedReader reader = Files.newBufferedReader(Paths.get("src/main/resources/" + prop.getProperty(config + "_CONFIG_FILE")));
+			CSVParser parser = new CSVParser(reader, CSVFormat.newFormat(';').withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
+			for (CSVRecord record : parser) {
+				if (row.equals(record.get(0))) {
+					stringValue = record.get(col);
+					break;
+				}
+			}
+		} catch (IOException exception) {
+			logger.debug("Błąd wczytywania konfiguracji");
+		}
 
-        return value;
-    }
+		return castValueFromString(outputClass, stringValue);
+	}
+
+	private static <T> T castValueFromString(Class<T> outputClass, String stringValue) {
+		T value = null;
+		if (outputClass == String.class) {
+			value = outputClass.cast(stringValue);
+		} else if (outputClass == Integer.class) {
+			value = outputClass.cast(Integer.parseInt(stringValue));
+		} else if (outputClass == Boolean.class) {
+			value = outputClass.cast(Boolean.valueOf(stringValue));
+		} else if (outputClass == SpecialSkillType.class) {
+			value = outputClass.cast(SpecialSkillType.valueOf(stringValue));
+		} else if (outputClass == EventEffectType.class) {
+			value = outputClass.cast(EventEffectType.valueOf(stringValue));
+		} else if (outputClass == EventIconType.class) {
+			value = outputClass.cast(EventIconType.valueOf(stringValue));
+		} else if (outputClass == ThreatActionType.class) {
+			value = outputClass.cast(ThreatActionType.valueOf(stringValue));
+		} else if (outputClass == ThreatEffectType.class) {
+			value = outputClass.cast(ThreatEffectType.valueOf(stringValue));
+		} else if (outputClass == TerrainType.class) {
+			value = outputClass.cast(TerrainType.valueOf(stringValue));
+		} else if (outputClass == ResourceType.class) {
+			value = outputClass.cast(ResourceType.valueOf(stringValue));
+		} else if (outputClass == ProfessionType.class) {
+			value = outputClass.cast(ProfessionType.valueOf(stringValue));
+		} else {
+			logger.warn("Błąd rzutowania typów w trakcie inicjalizacji danych.");
+		}
+
+		return value;
+	}
 }

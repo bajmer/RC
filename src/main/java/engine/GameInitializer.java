@@ -5,21 +5,22 @@ import model.character.additional.FridayCharacter;
 import model.character.main.MainCharacter;
 import model.data.GlobalData;
 import model.decks.Decks;
-import model.elements.decks.cards.BeastCard;
-import model.elements.decks.cards.EventCard;
-import model.elements.decks.cards.InventionCard;
-import model.elements.decks.cards.StartingItemCard;
-import model.elements.decks.cards.adventure.BuildingAdventureCard;
-import model.elements.decks.cards.adventure.ExplorationAdventureCard;
-import model.elements.decks.cards.adventure.ResourcesAdventureCard;
-import model.elements.decks.cards.mystery.MysteryCard;
-import model.elements.decks.cards.mystery.MysteryMonsterCard;
-import model.elements.decks.cards.mystery.MysteryTrapCard;
-import model.elements.decks.cards.mystery.MysteryTreasureCard;
-import model.elements.decks.tiles.DiscoveryToken;
-import model.elements.decks.tiles.IslandTile;
+import model.elements.cards.BeastCard;
+import model.elements.cards.EventCard;
+import model.elements.cards.InventionCard;
+import model.elements.cards.StartingItemCard;
+import model.elements.cards.adventure.BuildingAdventureCard;
+import model.elements.cards.adventure.ExplorationAdventureCard;
+import model.elements.cards.adventure.ResourcesAdventureCard;
+import model.elements.cards.mystery.MysteryCard;
+import model.elements.cards.mystery.MysteryMonsterCard;
+import model.elements.cards.mystery.MysteryTrapCard;
+import model.elements.cards.mystery.MysteryTreasureCard;
+import model.elements.tiles.DiscoveryToken;
+import model.elements.tiles.IslandTile;
 import model.enums.*;
 import model.enums.cards.BeastType;
+import model.enums.cards.InventionType;
 import model.enums.cards.StartingItemType;
 import model.enums.cards.adventure.BuildingAdventureType;
 import model.enums.cards.adventure.ExplorationAdventureType;
@@ -33,6 +34,7 @@ import model.enums.cards.mystery.MysteryTrapType;
 import model.enums.cards.mystery.MysteryTreasureType;
 import model.enums.elements.ResourceType;
 import model.options.Options;
+import model.requirements.Requirements;
 import model.scenario.Scenario;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,6 +53,7 @@ class GameInitializer {
     private final String ADV_RESOURCES_PREFIX = "ADV_RESOURCES";
     private final String BEAST_PREFIX = "BEAST";
     private final String ISLAND_PREFIX = "ISLAND";
+    private final String INVENTION_PREFIX = "INVENTION";
     private Logger logger = LogManager.getLogger(GameInitializer.class);
     private Options options;
 
@@ -80,7 +83,7 @@ class GameInitializer {
         LinkedList<IslandTile> islandTilesStack = createIslandTilesStack();
         LinkedList<InventionCard> inventionsDeck = createInventionsDeck();
 
-        List<InventionCard> ideas = chooseInventionCards();
+        List<InventionCard> ideas = createIdeasDeck(inventionsDeck, scenario.getId());
 
         Decks decks = new Decks(
                 eventsDeck,
@@ -101,7 +104,7 @@ class GameInitializer {
         int scenarioID = options.getScenarioNumber();
         Scenario scenario = new Scenario(
                 scenarioID,
-                Integer.parseInt(ConfigReader.loadValue(SCENARIO_PREFIX, Integer.toString(scenarioID), "ALL_ROUNDS"))
+                ConfigReader.loadValue(Integer.class, SCENARIO_PREFIX, Integer.toString(scenarioID), "ALL_ROUNDS")
         );
         logger.info("Utworzono scenariusz.");
 
@@ -117,12 +120,12 @@ class GameInitializer {
                     profession,
                     sex,
                     new ArrayList<>(Arrays.asList(
-                            SpecialSkillType.valueOf(ConfigReader.loadValue(CHARACTER_PREFIX, profession.toString(), "SKILL_1")),
-                            SpecialSkillType.valueOf(ConfigReader.loadValue(CHARACTER_PREFIX, profession.toString(), "SKILL_2")),
-                            SpecialSkillType.valueOf(ConfigReader.loadValue(CHARACTER_PREFIX, profession.toString(), "SKILL_3")),
-                            SpecialSkillType.valueOf(ConfigReader.loadValue(CHARACTER_PREFIX, profession.toString(), "SKILL_4"))
+                            ConfigReader.loadValue(SpecialSkillType.class, CHARACTER_PREFIX, profession.toString(), "SKILL_1"),
+                            ConfigReader.loadValue(SpecialSkillType.class, CHARACTER_PREFIX, profession.toString(), "SKILL_2"),
+                            ConfigReader.loadValue(SpecialSkillType.class, CHARACTER_PREFIX, profession.toString(), "SKILL_3"),
+                            ConfigReader.loadValue(SpecialSkillType.class, CHARACTER_PREFIX, profession.toString(), "SKILL_4")
                     )),
-                    Integer.parseInt(ConfigReader.loadValue(CHARACTER_PREFIX, profession.toString(), "LIVES"))
+                    ConfigReader.loadValue(Integer.class, CHARACTER_PREFIX, profession.toString(), "LIVES")
             ));
         });
 
@@ -147,21 +150,20 @@ class GameInitializer {
             startingItems.add(startingItemsStack.removeFirst());
         }
 
-        logger.info("Wylosowano przedmioty startowe.");
-        for (StartingItemCard card : startingItems) {
-            logger.debug(card);
-        }
+        StringBuilder sb = new StringBuilder();
+        startingItems.forEach(startingItemCard -> sb.append(startingItemCard.getItemType().toString()).append(" "));
+        logger.info("Wylosowano przedmioty startowe: " + sb.toString());
 
         return startingItems;
     }
 
     private LinkedList<EventCard> createEventsDeck(int scenarioAllRounds) {
         LinkedList<EventCard> allEventsDeck = new LinkedList<>();
-        Arrays.stream(EventEffectType.values()).filter(eventEffectType -> !eventEffectType.toString().startsWith("ADV_")).forEach(eventEffectType -> allEventsDeck.add(new EventCard(
+        Arrays.asList(EventEffectType.values()).forEach(eventEffectType -> allEventsDeck.add(new EventCard(
                 eventEffectType,
-                EventIconType.valueOf(ConfigReader.loadValue(EVENT_PREFIX, eventEffectType.toString(), "EVENT_ICON")),
-                ThreatActionType.valueOf(ConfigReader.loadValue(EVENT_PREFIX, eventEffectType.toString(), "THREAT_ACTION")),
-                ThreatEffectType.valueOf(ConfigReader.loadValue(EVENT_PREFIX, eventEffectType.toString(), "THREAT_EFFECT"))
+                ConfigReader.loadValue(EventIconType.class, EVENT_PREFIX, eventEffectType.toString(), "EVENT_ICON"),
+                ConfigReader.loadValue(ThreatActionType.class, EVENT_PREFIX, eventEffectType.toString(), "THREAT_ACTION"),
+                ConfigReader.loadValue(ThreatEffectType.class, EVENT_PREFIX, eventEffectType.toString(), "THREAT_EFFECT")
         )));
         Collections.shuffle(allEventsDeck);
 
@@ -199,7 +201,7 @@ class GameInitializer {
         Arrays.asList(BuildingAdventureType.values()).forEach(buildingAdventureType -> buildingAdventuresDeck.add(
                 new BuildingAdventureCard(
                         buildingAdventureType,
-                        EventEffectType.valueOf(ConfigReader.loadValue(ADV_BUILDING_PREFIX, buildingAdventureType.toString(), "EVENT_NAME"))
+                        ConfigReader.loadValue(EventEffectType.class, ADV_BUILDING_PREFIX, buildingAdventureType.toString(), "EVENT_NAME")
                 )
         ));
         Collections.shuffle(buildingAdventuresDeck);
@@ -213,7 +215,7 @@ class GameInitializer {
         Arrays.asList(ExplorationAdventureType.values()).forEach(explorationAdventureType -> explorationAdventuresDeck.add(
                 new ExplorationAdventureCard(
                         explorationAdventureType,
-                        EventEffectType.valueOf(ConfigReader.loadValue(ADV_EXPLORATION_PREFIX, explorationAdventureType.toString(), "EVENT_NAME"))
+                        ConfigReader.loadValue(EventEffectType.class, ADV_EXPLORATION_PREFIX, explorationAdventureType.toString(), "EVENT_NAME")
                 )
         ));
         Collections.shuffle(explorationAdventuresDeck);
@@ -227,7 +229,7 @@ class GameInitializer {
         Arrays.asList(ResourcesAdventureType.values()).forEach(resourcesAdventureType -> resourcesAdventuresDeck.add(
                 new ResourcesAdventureCard(
                         resourcesAdventureType,
-                        EventEffectType.valueOf(ConfigReader.loadValue(ADV_RESOURCES_PREFIX, resourcesAdventureType.toString(), "EVENT_NAME"))
+                        ConfigReader.loadValue(EventEffectType.class, ADV_RESOURCES_PREFIX, resourcesAdventureType.toString(), "EVENT_NAME")
                 )
         ));
         Collections.shuffle(resourcesAdventuresDeck);
@@ -241,10 +243,10 @@ class GameInitializer {
         LinkedList<BeastCard> beastsDeck = new LinkedList<>();
         Arrays.asList(BeastType.values()).forEach(beastType -> beastsDeck.add(new BeastCard(
                 beastType,
-                Integer.parseInt(ConfigReader.loadValue(BEAST_PREFIX, beastType.toString(), "STRENGTH")),
-                Integer.parseInt(ConfigReader.loadValue(BEAST_PREFIX, beastType.toString(), "DAMAGE")),
-                Integer.parseInt(ConfigReader.loadValue(BEAST_PREFIX, beastType.toString(), "FOOD")),
-                Integer.parseInt(ConfigReader.loadValue(BEAST_PREFIX, beastType.toString(), "FURS"))
+                ConfigReader.loadValue(Integer.class, BEAST_PREFIX, beastType.toString(), "STRENGTH"),
+                ConfigReader.loadValue(Integer.class, BEAST_PREFIX, beastType.toString(), "DAMAGE"),
+                ConfigReader.loadValue(Integer.class, BEAST_PREFIX, beastType.toString(), "FOOD"),
+                ConfigReader.loadValue(Integer.class, BEAST_PREFIX, beastType.toString(), "FURS")
         )));
         Collections.shuffle(beastsDeck);
 
@@ -278,40 +280,86 @@ class GameInitializer {
         for (int i = 1; i <= 11; i++) {
             IslandTile islandTile = new IslandTile(
                     i,
-                    TerrainType.valueOf(ConfigReader.loadValue(ISLAND_PREFIX, String.valueOf(i), "TERRAIN")),
-                    ResourceType.valueOf(ConfigReader.loadValue(ISLAND_PREFIX, String.valueOf(i), "LEFT_RESOURCE")),
-                    ResourceType.valueOf(ConfigReader.loadValue(ISLAND_PREFIX, String.valueOf(i), "RIGHT_RESOURCE")),
-                    Integer.parseInt(ConfigReader.loadValue(ISLAND_PREFIX, String.valueOf(i), "TOTEMS")),
-                    Integer.parseInt(ConfigReader.loadValue(ISLAND_PREFIX, String.valueOf(i), "TOKENS")),
-                    Boolean.parseBoolean(ConfigReader.loadValue(ISLAND_PREFIX, String.valueOf(i), "NATURAL_SHELTER"))
+                    ConfigReader.loadValue(TerrainType.class, ISLAND_PREFIX, String.valueOf(i), "TERRAIN"),
+                    ConfigReader.loadValue(ResourceType.class, ISLAND_PREFIX, String.valueOf(i), "LEFT_RESOURCE"),
+                    ConfigReader.loadValue(ResourceType.class, ISLAND_PREFIX, String.valueOf(i), "RIGHT_RESOURCE"),
+                    ConfigReader.loadValue(Integer.class, ISLAND_PREFIX, String.valueOf(i), "TOTEMS"),
+                    ConfigReader.loadValue(Integer.class, ISLAND_PREFIX, String.valueOf(i), "TOKENS"),
+                    ConfigReader.loadValue(Boolean.class, ISLAND_PREFIX, String.valueOf(i), "NATURAL_SHELTER")
             );
+            islandTilesDeck.add(islandTile);
+            Collections.shuffle(islandTilesDeck);
+            islandTilesDeck.sort((t1, t2) -> t1.getTileID() == 8 ? -1 : t2.getTileID() == 8 ? 1 : 0);
 
-            if (i != 8) {
-                islandTilesDeck.add(islandTile);
-            } else {
-                // TODO: 2018-11-16
+            // TODO: 2018-11-16 przełożenie kafelka nr 8 na planszę
 //				GameInfo.getDiscoveredTiles().add(islandTile);
 //				board.getTilePositionIdToIslandTile().put(1, islandTile);
 //				GameInfo.setCamp(islandTile);
-            }
         }
-        Collections.shuffle(islandTilesDeck);
 
         logger.info("Przygotowano stos kafelków wyspy.");
         return islandTilesDeck;
     }
 
     private LinkedList<InventionCard> createInventionsDeck() {
+        LinkedList<InventionCard> inventionCardsDeck = new LinkedList<>();
+        Arrays.stream(InventionType.values())
+                .filter(inventionType ->
+                        !inventionType.toString().startsWith("SCN_") &&
+                                !ConfigReader.loadValue(Boolean.class, INVENTION_PREFIX, inventionType.toString(), "INITIAL"))
+                .forEach(inventionType -> inventionCardsDeck.add(new InventionCard(
+                        inventionType,
+                        ConfigReader.loadValue(ProfessionType.class, INVENTION_PREFIX, inventionType.toString(), "OWNER"),
+                        new Requirements(
+                                // TODO: 2018-11-19
+                                null,
+                                null,
+                                0,
+                                0
+                        ),
+                        ConfigReader.loadValue(Boolean.class, INVENTION_PREFIX, inventionType.toString(), "INITIAL"),
+                        true,
+                        ConfigReader.loadValue(Boolean.class, INVENTION_PREFIX, inventionType.toString(), "MULTIPLE")
+                )));
+        Collections.shuffle(inventionCardsDeck);
 
-        return null;
+        logger.info("Przygotowano talię pomysłów.");
+        return inventionCardsDeck;
     }
 
-    private List<InventionCard> chooseInventionCards() {
+    private List<InventionCard> createIdeasDeck(LinkedList<InventionCard> inventionsDeck, int scenarioID) {
+        List<InventionCard> ideasDeck = new ArrayList<>();
+        String scenarioInvention1 = ConfigReader.loadValue(String.class, SCENARIO_PREFIX, String.valueOf(scenarioID), "INVENTION_1");
+        String scenarioInvention2 = ConfigReader.loadValue(String.class, SCENARIO_PREFIX, String.valueOf(scenarioID), "INVENTION_2");
+        Arrays.stream(InventionType.values())
+                .filter(inventionType -> inventionType.toString().equals(scenarioInvention1) ||
+                        inventionType.toString().equals(scenarioInvention2) ||
+                        ConfigReader.loadValue(Boolean.class, INVENTION_PREFIX, inventionType.toString(), "INITIAL"))
+                .forEach(inventionType -> ideasDeck.add(new InventionCard(
+                        inventionType,
+                        ConfigReader.loadValue(ProfessionType.class, INVENTION_PREFIX, inventionType.toString(), "OWNER"),
+                        new Requirements(
+                                // TODO: 2018-11-19
+                                null,
+                                null,
+                                0,
+                                0
+                        ),
+                        ConfigReader.loadValue(Boolean.class, INVENTION_PREFIX, inventionType.toString(), "INITIAL"),
+                        true,
+                        ConfigReader.loadValue(Boolean.class, INVENTION_PREFIX, inventionType.toString(), "MULTIPLE")
+                )));
 
-        return null;
+        for (int i = 0; i < 5; i++) {
+            ideasDeck.add(inventionsDeck.removeFirst());
+        }
+
+        StringBuilder sb = new StringBuilder();
+        ideasDeck.forEach(inventionCard -> sb.append(inventionCard.getInvention().toString()).append(" "));
+        logger.info("Wylosowano karty pomysłów: " + sb.toString());
+        return ideasDeck;
     }
 
-    //
     //createActions();
     //createCharacterMarkers();
 }

@@ -2,12 +2,15 @@ package model.data;
 
 import model.character.Character;
 import model.decks.Decks;
-import model.elements.decks.cards.InventionCard;
-import model.elements.decks.cards.StartingItemCard;
-import model.elements.decks.tiles.IslandTile;
+import model.elements.cards.BeastCard;
+import model.elements.cards.EventCard;
+import model.elements.cards.InventionCard;
+import model.elements.cards.StartingItemCard;
+import model.elements.tiles.IslandTile;
 import model.scenario.Scenario;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GlobalData {
@@ -19,6 +22,8 @@ public class GlobalData {
     private List<InventionCard> ideas;
     private List<InventionCard> inventions = new ArrayList<>();
     private List<IslandTile> discoveredIslandTiles = new ArrayList<>();
+    private LinkedList<EventCard> threatActionCards = new LinkedList<>();
+    private LinkedList<BeastCard> avaibleBeastCards = new LinkedList<>();
 
     public GlobalData(Decks decks, Scenario scenario, List<Character> characters, List<StartingItemCard> startingItems, List<InventionCard> ideas) {
         this.decks = decks;

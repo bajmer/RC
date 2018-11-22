@@ -1,8 +1,12 @@
 package model.character.additional;
 
 import model.character.Character;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class FridayCharacter implements Character {
+    private Logger logger = LogManager.getLogger(FridayCharacter.class);
+
     private int lives;
     private int determination;
 
@@ -25,5 +29,29 @@ public class FridayCharacter implements Character {
 
     public void setDetermination(int determination) {
         this.determination = determination;
+    }
+
+    @Override
+    public void changeLivesLevel(int value) {
+        lives += value;
+        if (lives > 4) {
+            lives = 4;
+        } else if (lives <= 0) {
+            lives = 0;
+        }
+        logger.debug("The number of FRIDAY lives has been changed to: " + lives);
+        if (lives <= 0) {
+            // TODO: 2018-11-22 Handle Friday death
+        }
+    }
+
+    @Override
+    public void changeDeterminationLevel(int value) {
+        determination += value;
+        if (determination < 0) {
+            changeLivesLevel(determination);
+            determination = 0;
+        }
+        logger.debug("The number of FRIDAY determinations has been changed to: " + determination);
     }
 }

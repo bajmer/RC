@@ -1,7 +1,7 @@
 package model.enums;
 
 public enum ActionType {
-    THREAD_ACTION,
+    THREAT_ACTION,
     HUNTING_ACTION,
     BUILDING_ACTION,
     RESOURCES_ACTION,

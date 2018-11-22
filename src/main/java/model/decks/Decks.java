@@ -2,7 +2,7 @@ package model.decks;
 
 import model.elements.cards.BeastCard;
 import model.elements.cards.EventCard;
-import model.elements.cards.InventionCard;
+import model.elements.cards.IdeaCard;
 import model.elements.cards.adventure.BuildingAdventureCard;
 import model.elements.cards.adventure.ExplorationAdventureCard;
 import model.elements.cards.adventure.ResourcesAdventureCard;
@@ -21,9 +21,9 @@ public class Decks {
     private LinkedList<MysteryCard> mysteryCardsDeck;
     private LinkedList<DiscoveryToken> discoveryTokensStack;
     private LinkedList<IslandTile> islandTilesStack;
-    private LinkedList<InventionCard> inventionCardsDeck;
+    private LinkedList<IdeaCard> ideaCardsDeck;
 
-    public Decks(LinkedList<EventCard> eventCardsDeck, LinkedList<BuildingAdventureCard> buildingAdventureCardsDeck, LinkedList<ExplorationAdventureCard> explorationAdventureCardsDeck, LinkedList<ResourcesAdventureCard> resourcesAdventureCardsDeck, LinkedList<BeastCard> beastCardsDeck, LinkedList<MysteryCard> mysteryCardsDeck, LinkedList<DiscoveryToken> discoveryTokensStack, LinkedList<IslandTile> islandTilesStack, LinkedList<InventionCard> inventionCardsDeck) {
+    public Decks(LinkedList<EventCard> eventCardsDeck, LinkedList<BuildingAdventureCard> buildingAdventureCardsDeck, LinkedList<ExplorationAdventureCard> explorationAdventureCardsDeck, LinkedList<ResourcesAdventureCard> resourcesAdventureCardsDeck, LinkedList<BeastCard> beastCardsDeck, LinkedList<MysteryCard> mysteryCardsDeck, LinkedList<DiscoveryToken> discoveryTokensStack, LinkedList<IslandTile> islandTilesStack, LinkedList<IdeaCard> ideaCardsDeck) {
         this.eventCardsDeck = eventCardsDeck;
         this.buildingAdventureCardsDeck = buildingAdventureCardsDeck;
         this.explorationAdventureCardsDeck = explorationAdventureCardsDeck;
@@ -32,7 +32,7 @@ public class Decks {
         this.mysteryCardsDeck = mysteryCardsDeck;
         this.discoveryTokensStack = discoveryTokensStack;
         this.islandTilesStack = islandTilesStack;
-        this.inventionCardsDeck = inventionCardsDeck;
+        this.ideaCardsDeck = ideaCardsDeck;
     }
 
     public LinkedList<EventCard> getEventCardsDeck() {
@@ -99,11 +99,11 @@ public class Decks {
         this.islandTilesStack = islandTilesStack;
     }
 
-    public LinkedList<InventionCard> getInventionCardsDeck() {
-        return inventionCardsDeck;
+    public LinkedList<IdeaCard> getIdeaCardsDeck() {
+        return ideaCardsDeck;
     }
 
-    public void setInventionCardsDeck(LinkedList<InventionCard> inventionCardsDeck) {
-        this.inventionCardsDeck = inventionCardsDeck;
+    public void setIdeaCardsDeck(LinkedList<IdeaCard> ideaCardsDeck) {
+        this.ideaCardsDeck = ideaCardsDeck;
     }
 }

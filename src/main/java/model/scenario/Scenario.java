@@ -9,6 +9,7 @@ public class Scenario {
     public Scenario(int id, int allRounds) {
         this.id = id;
         this.allRounds = allRounds;
+        this.round = 0;
     }
 
     public int getId() {
@@ -33,5 +34,12 @@ public class Scenario {
 
     public void setAllRounds(int allRounds) {
         this.allRounds = allRounds;
+    }
+
+    public void nextRound() {
+        round += 1;
+        if (round > allRounds) {
+            // TODO: 2018-11-21 Koniec
+        }
     }
 }

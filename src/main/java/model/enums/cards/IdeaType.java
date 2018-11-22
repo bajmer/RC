@@ -1,6 +1,6 @@
 package model.enums.cards;
 
-public enum InventionType {
+public enum IdeaType {
     BOW,
     BRICKS,
     DAM,

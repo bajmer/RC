@@ -1,4 +1,4 @@
-package model.enums.elements;
+package model.enums.elements.dices;
 
 public enum DiceWallType {
     NOTHING,

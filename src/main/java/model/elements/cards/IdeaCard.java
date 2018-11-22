@@ -1,32 +1,32 @@
 package model.elements.cards;
 
 import model.enums.ProfessionType;
-import model.enums.cards.InventionType;
+import model.enums.cards.IdeaType;
 import model.requirements.Requirements;
 
-public class InventionCard implements Card {
-    private InventionType invention;
+public class IdeaCard implements Card {
+    private IdeaType idea;
     private ProfessionType owner;
     private Requirements requirements;
     private boolean initialIdea;
-    private boolean idea;
+    private boolean transformedToItem;
     private boolean multipleUse;
 
-    public InventionCard(InventionType invention, ProfessionType owner, Requirements requirements, boolean initialIdea, boolean idea, boolean multipleUse) {
-        this.invention = invention;
+    public IdeaCard(IdeaType idea, ProfessionType owner, Requirements requirements, boolean initialIdea, boolean transformedToItem, boolean multipleUse) {
+        this.idea = idea;
         this.owner = owner;
         this.requirements = requirements;
         this.initialIdea = initialIdea;
-        this.idea = idea;
+        this.transformedToItem = transformedToItem;
         this.multipleUse = multipleUse;
     }
 
-    public InventionType getInvention() {
-        return invention;
+    public IdeaType getIdea() {
+        return idea;
     }
 
-    public void setInvention(InventionType invention) {
-        this.invention = invention;
+    public void setIdea(IdeaType idea) {
+        this.idea = idea;
     }
 
     public ProfessionType getOwner() {
@@ -53,12 +53,12 @@ public class InventionCard implements Card {
         this.initialIdea = initialIdea;
     }
 
-    public boolean isIdea() {
-        return idea;
+    public boolean isTransformedToItem() {
+        return transformedToItem;
     }
 
-    public void setIdea(boolean idea) {
-        this.idea = idea;
+    public void setTransformedToItem(boolean transformedToItem) {
+        this.transformedToItem = transformedToItem;
     }
 
     public boolean isMultipleUse() {

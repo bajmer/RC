@@ -1,15 +1,15 @@
 package model.requirements;
 
-import model.elements.cards.InventionCard;
+import model.elements.cards.IdeaCard;
 import model.enums.TerrainType;
 
 public class Requirements {
     private TerrainType requiredTerrain;
-    private InventionCard requiredItem;
+    private IdeaCard requiredItem;
     private int requiredWoods;
     private int requiredHides;
 
-    public Requirements(TerrainType requiredTerrain, InventionCard requiredItem, int requiredWoods, int requiredHides) {
+    public Requirements(TerrainType requiredTerrain, IdeaCard requiredItem, int requiredWoods, int requiredHides) {
         this.requiredTerrain = requiredTerrain;
         this.requiredItem = requiredItem;
         this.requiredWoods = requiredWoods;
@@ -24,11 +24,11 @@ public class Requirements {
         this.requiredTerrain = requiredTerrain;
     }
 
-    public InventionCard getRequiredItem() {
+    public IdeaCard getRequiredItem() {
         return requiredItem;
     }
 
-    public void setRequiredItem(InventionCard requiredItem) {
+    public void setRequiredItem(IdeaCard requiredItem) {
         this.requiredItem = requiredItem;
     }
 

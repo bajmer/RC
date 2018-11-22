@@ -1,7 +1,9 @@
 package engine;
 
+import engine.handler.PhaseHandler;
 import model.data.GlobalData;
 import model.options.Options;
+import model.phase.Phase;
 
 public class GameEngine implements GameEngineListener {
 
@@ -11,14 +13,16 @@ public class GameEngine implements GameEngineListener {
 	public GameEngine(Options options) {
 		GameInitializer gameInitializer = new GameInitializer(options);
 		globalData = gameInitializer.initialize();
-
 	}
 
 	public void play() {
-//		while (!gameOver) {
-//			Phase phase = PhaseCycleHandler.nextPhase();
-//			phase.runPhase(globalData);
-//		}
+		int i = 0;
+		while (i < 100 /*!gameOver*/) {
+			Phase phase = PhaseHandler.nextPhase();
+			phase.initializePhase(globalData);
+			phase.runPhase(globalData);
+			i++;
+		}
 	}
 
 	@Override

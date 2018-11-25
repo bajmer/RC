@@ -1,50 +1,93 @@
 package model.requirements;
 
-import model.elements.cards.IdeaCard;
 import model.enums.TerrainType;
+import model.enums.cards.IdeaType;
+import model.resources.Resources;
+
+import java.util.List;
 
 public class Requirements {
-    private TerrainType requiredTerrain;
-    private IdeaCard requiredItem;
-    private int requiredWoods;
-    private int requiredHides;
+    private List<TerrainType> requiredTerrains;
+    private List<IdeaType> requiredItems;
+    private List<Resources> requiredResources;
+    private List<Integer> requiredLevels;
+    private boolean requiredShelter;
+    private int minNumberOfMarkers;
+    private int maxNumberOfMarkers;
+    private int requiredNumberOfDeterminations;
 
-    public Requirements(TerrainType requiredTerrain, IdeaCard requiredItem, int requiredWoods, int requiredHides) {
-        this.requiredTerrain = requiredTerrain;
-        this.requiredItem = requiredItem;
-        this.requiredWoods = requiredWoods;
-        this.requiredHides = requiredHides;
+    public Requirements(List<TerrainType> requiredTerrains, List<IdeaType> requiredItems, List<Resources> requiredResources, List<Integer> requiredLevels, boolean requiredShelter, int minNumberOfMarkers, int maxNumberOfMarkers, int requiredNumberOfDeterminations) {
+        this.requiredTerrains = requiredTerrains;
+        this.requiredItems = requiredItems;
+        this.requiredResources = requiredResources;
+        this.requiredLevels = requiredLevels;
+        this.requiredShelter = requiredShelter;
+        this.minNumberOfMarkers = minNumberOfMarkers;
+        this.maxNumberOfMarkers = maxNumberOfMarkers;
+        this.requiredNumberOfDeterminations = requiredNumberOfDeterminations;
     }
 
-    public TerrainType getRequiredTerrain() {
-        return requiredTerrain;
+    public List<TerrainType> getRequiredTerrains() {
+        return requiredTerrains;
     }
 
-    public void setRequiredTerrain(TerrainType requiredTerrain) {
-        this.requiredTerrain = requiredTerrain;
+    public void setRequiredTerrains(List<TerrainType> requiredTerrains) {
+        this.requiredTerrains = requiredTerrains;
     }
 
-    public IdeaCard getRequiredItem() {
-        return requiredItem;
+    public List<IdeaType> getRequiredItems() {
+        return requiredItems;
     }
 
-    public void setRequiredItem(IdeaCard requiredItem) {
-        this.requiredItem = requiredItem;
+    public void setRequiredItems(List<IdeaType> requiredItems) {
+        this.requiredItems = requiredItems;
     }
 
-    public int getRequiredWoods() {
-        return requiredWoods;
+    public List<Resources> getRequiredResources() {
+        return requiredResources;
     }
 
-    public void setRequiredWoods(int requiredWoods) {
-        this.requiredWoods = requiredWoods;
+    public void setRequiredResources(List<Resources> requiredResources) {
+        this.requiredResources = requiredResources;
     }
 
-    public int getRequiredHides() {
-        return requiredHides;
+    public List<Integer> getRequiredLevels() {
+        return requiredLevels;
     }
 
-    public void setRequiredHides(int requiredHides) {
-        this.requiredHides = requiredHides;
+    public void setRequiredLevels(List<Integer> requiredLevels) {
+        this.requiredLevels = requiredLevels;
+    }
+
+    public boolean isRequiredShelter() {
+        return requiredShelter;
+    }
+
+    public void setRequiredShelter(boolean requiredShelter) {
+        this.requiredShelter = requiredShelter;
+    }
+
+    public int getMinNumberOfMarkers() {
+        return minNumberOfMarkers;
+    }
+
+    public void setMinNumberOfMarkers(int minNumberOfMarkers) {
+        this.minNumberOfMarkers = minNumberOfMarkers;
+    }
+
+    public int getMaxNumberOfMarkers() {
+        return maxNumberOfMarkers;
+    }
+
+    public void setMaxNumberOfMarkers(int maxNumberOfMarkers) {
+        this.maxNumberOfMarkers = maxNumberOfMarkers;
+    }
+
+    public int getRequiredNumberOfDeterminations() {
+        return requiredNumberOfDeterminations;
+    }
+
+    public void setRequiredNumberOfDeterminations(int requiredNumberOfDeterminations) {
+        this.requiredNumberOfDeterminations = requiredNumberOfDeterminations;
     }
 }

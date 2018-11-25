@@ -14,7 +14,7 @@ public class MoralePhase implements Phase {
 
     @Override
     public void runPhase(GlobalData globalData) {
-        int morale = globalData.getMoraleLevel();
+        int morale = globalData.getGameParams().getMoraleLevel();
         logger.info("Morale level: " + morale);
 
         globalData.getFirstPlayer().changeDeterminationLevel(morale);

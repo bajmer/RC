@@ -2,12 +2,15 @@ package model.character.main;
 
 import model.character.Character;
 import model.data.GlobalData;
+import model.elements.Marker;
 import model.enums.ProfessionType;
 import model.enums.SexType;
 import model.enums.SpecialSkillType;
+import model.enums.elements.MarkerType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainCharacter implements Character {
@@ -15,16 +18,13 @@ public class MainCharacter implements Character {
 
     private ProfessionType profession;
     private SexType sex;
-    //	private IdeaType personalInvention;
     private List<SpecialSkillType> specialSkills;
     private List<Integer> moraleDown;
     private int lives;
     private int beginLives;
     private int determination;
-//	private boolean firstPlayer;
-//	private boolean starving;
-private GlobalData globalData;
-
+    private List<Marker> markers = new ArrayList<>();
+    private GlobalData globalData;
 
     public MainCharacter(ProfessionType profession, SexType sex, List<SpecialSkillType> specialSkills, List<Integer> moraleDown, int lives) {
         this.profession = profession;
@@ -34,6 +34,9 @@ private GlobalData globalData;
         this.lives = lives;
         this.beginLives = lives;
         this.determination = 0;
+        for (int i = 0; i < 2; i++) {
+            this.markers.add(new Marker(MarkerType.valueOf(profession.toString() + "_MARKER")));
+        }
     }
 
     public ProfessionType getProfession() {
@@ -90,6 +93,15 @@ private GlobalData globalData;
 
     public void setGlobalData(GlobalData globalData) {
         this.globalData = globalData;
+    }
+
+    @Override
+    public List<Marker> getMarkers() {
+        return markers;
+    }
+
+    public void setMarkers(List<Marker> markers) {
+        this.markers = markers;
     }
 
     @Override

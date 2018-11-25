@@ -4,10 +4,12 @@ import model.character.Character;
 import model.character.main.MainCharacter;
 import model.decks.Decks;
 import model.elements.Dices;
+import model.elements.Marker;
 import model.elements.cards.BeastCard;
 import model.elements.cards.EventCard;
 import model.elements.cards.IdeaCard;
 import model.elements.cards.StartingItemCard;
+import model.elements.cards.mystery.MysteryCard;
 import model.elements.tiles.IslandTile;
 import model.enums.elements.ResourceType;
 import model.resources.Resources;
@@ -27,6 +29,7 @@ public class GlobalData {
     private List<StartingItemCard> startingItems;
     private List<IdeaCard> ideas;
     private List<IdeaCard> inventions = new ArrayList<>();
+    private List<MysteryCard> treasures = new ArrayList<>();
     private Map<Integer, IslandTile> discoveredIslandTiles = new HashMap<>();
     private LinkedList<EventCard> threatActionCards = new LinkedList<>();
     private LinkedList<BeastCard> availableBeastCards = new LinkedList<>();
@@ -34,13 +37,15 @@ public class GlobalData {
     private Resources futureResources = new Resources();
     private MainCharacter firstPlayer;
     private IslandTile camp;
+    private List<Marker> availableActionHelpers = new ArrayList<>();
+    private GameParams gameParams = new GameParams();
     private boolean shelter = false;
-    private int moraleLevel = 0;
-    private int roofLevel = 0;
-    private int palisadeLevel = 0;
-    private int weaponLevel = 0;
-    private int foodProduction = 0;
-    private int woodProduction = 0;
+//    private int moraleLevel = 0;
+//    private int roofLevel = 0;
+//    private int palisadeLevel = 0;
+//    private int weaponLevel = 0;
+//    private int foodProduction = 0;
+//    private int woodProduction = 0;
 
     public GlobalData(Decks decks, Dices dices, Scenario scenario, List<Character> characters, List<StartingItemCard> startingItems, List<IdeaCard> ideas) {
         this.decks = decks;
@@ -115,50 +120,51 @@ public class GlobalData {
         final int MIN = -3;
         final int MAX = 3;
 
-        int beginMoraleLevel = moraleLevel;
+        int beginMoraleLevel = gameParams.getMoraleLevel();
         int newMoraleLevel = beginMoraleLevel + value;
-        moraleLevel = (newMoraleLevel > MAX) ? MAX : (moraleLevel < MIN) ? MIN : newMoraleLevel;
-        if (moraleLevel != beginMoraleLevel) {
-            logger.info("MORALE has been changed to level: " + moraleLevel);
+        newMoraleLevel = (newMoraleLevel > MAX) ? MAX : (newMoraleLevel < MIN) ? MIN : newMoraleLevel;
+        gameParams.setMoraleLevel(newMoraleLevel);
+        if (newMoraleLevel != beginMoraleLevel) {
+            logger.info("MORALE has been changed to level: " + newMoraleLevel);
         }
     }
 
     public void changeRoofLevel(int value) {
-        int beginRoofLevel = roofLevel;
+        int beginRoofLevel = gameParams.getRoofLevel();
         int newRoofLevel = beginRoofLevel + value;
         if (newRoofLevel < 0) {
             reduceLivesLevelOfAllMainCharacters(newRoofLevel);
             newRoofLevel = 0;
         }
-        roofLevel = newRoofLevel;
-        if (roofLevel != beginRoofLevel) {
-            logger.info("ROOF has been changed to level: " + roofLevel);
+        gameParams.setRoofLevel(newRoofLevel);
+        if (newRoofLevel != beginRoofLevel) {
+            logger.info("ROOF has been changed to level: " + newRoofLevel);
         }
     }
 
     public void changePalisadeLevel(int value) {
-        int beginPalisadeLevel = palisadeLevel;
+        int beginPalisadeLevel = gameParams.getPalisadeLevel();
         int newPalisadeLevel = beginPalisadeLevel + value;
         if (newPalisadeLevel < 0) {
             reduceLivesLevelOfAllMainCharacters(newPalisadeLevel);
             newPalisadeLevel = 0;
         }
-        palisadeLevel = newPalisadeLevel;
-        if (palisadeLevel != beginPalisadeLevel) {
-            logger.info("PALISADE has been changed to level: " + palisadeLevel);
+        gameParams.setPalisadeLevel(newPalisadeLevel);
+        if (newPalisadeLevel != beginPalisadeLevel) {
+            logger.info("PALISADE has been changed to level: " + newPalisadeLevel);
         }
     }
 
     public void changeWeaponLevel(int value) {
-        int beginWeaponLevel = weaponLevel;
+        int beginWeaponLevel = gameParams.getWeaponLevel();
         int newWeaponLevel = beginWeaponLevel + value;
         if (newWeaponLevel < 0) {
             reduceLivesLevelOfAllMainCharacters(newWeaponLevel);
             newWeaponLevel = 0;
         }
-        weaponLevel = newWeaponLevel;
-        if (weaponLevel != beginWeaponLevel) {
-            logger.info("WEAPON has been changed to level: " + weaponLevel);
+        gameParams.setWeaponLevel(newWeaponLevel);
+        if (newWeaponLevel != beginWeaponLevel) {
+            logger.info("WEAPON has been changed to level: " + newWeaponLevel);
         }
     }
 
@@ -178,10 +184,11 @@ public class GlobalData {
         List<ResourceType> resources = new ArrayList<>();
         resources.add(targetIslandTile.getLeftSquareResource());
         resources.add(targetIslandTile.getRightSquareResource());
-        foodProduction = Math.toIntExact(resources.stream().filter(resourceType -> resourceType == ResourceType.FOOD).count());
-        woodProduction = Math.toIntExact(resources.stream().filter(resourceType -> resourceType == ResourceType.WOOD).count());
-
-        // TODO: 2018-11-22 Chcecking production modifications, etc.
+        int newFoodProduction = Math.toIntExact(resources.stream().filter(resourceType -> resourceType == ResourceType.FOOD).count());
+        int newWoodProduction = Math.toIntExact(resources.stream().filter(resourceType -> resourceType == ResourceType.WOOD).count());
+        gameParams.setFoodProduction(newFoodProduction);
+        gameParams.setWoodProduction(newWoodProduction);
+        // TODO: 2018-11-22 Checking production modifications, etc.
 
         // TODO: 2018-11-22 Handle natural shelter or not
 
@@ -248,6 +255,14 @@ public class GlobalData {
         this.inventions = inventions;
     }
 
+    public List<MysteryCard> getTreasures() {
+        return treasures;
+    }
+
+    public void setTreasures(List<MysteryCard> treasures) {
+        this.treasures = treasures;
+    }
+
     public Map<Integer, IslandTile> getDiscoveredIslandTiles() {
         return discoveredIslandTiles;
     }
@@ -304,6 +319,22 @@ public class GlobalData {
         this.camp = camp;
     }
 
+    public List<Marker> getAvailableActionHelpers() {
+        return availableActionHelpers;
+    }
+
+    public void setAvailableActionHelpers(List<Marker> availableActionHelpers) {
+        this.availableActionHelpers = availableActionHelpers;
+    }
+
+    public GameParams getGameParams() {
+        return gameParams;
+    }
+
+    public void setGameParams(GameParams gameParams) {
+        this.gameParams = gameParams;
+    }
+
     public boolean isShelter() {
         return shelter;
     }
@@ -312,51 +343,51 @@ public class GlobalData {
         this.shelter = shelter;
     }
 
-    public int getMoraleLevel() {
-        return moraleLevel;
-    }
-
-    public void setMoraleLevel(int moraleLevel) {
-        this.moraleLevel = moraleLevel;
-    }
-
-    public int getRoofLevel() {
-        return roofLevel;
-    }
-
-    public void setRoofLevel(int roofLevel) {
-        this.roofLevel = roofLevel;
-    }
-
-    public int getPalisadeLevel() {
-        return palisadeLevel;
-    }
-
-    public void setPalisadeLevel(int palisadeLevel) {
-        this.palisadeLevel = palisadeLevel;
-    }
-
-    public int getWeaponLevel() {
-        return weaponLevel;
-    }
-
-    public void setWeaponLevel(int weaponLevel) {
-        this.weaponLevel = weaponLevel;
-    }
-
-    public int getFoodProduction() {
-        return foodProduction;
-    }
-
-    public void setFoodProduction(int foodProduction) {
-        this.foodProduction = foodProduction;
-    }
-
-    public int getWoodProduction() {
-        return woodProduction;
-    }
-
-    public void setWoodProduction(int woodProduction) {
-        this.woodProduction = woodProduction;
-    }
+//    public int getMoraleLevel() {
+//        return moraleLevel;
+//    }
+//
+//    public void setMoraleLevel(int moraleLevel) {
+//        this.moraleLevel = moraleLevel;
+//    }
+//
+//    public int getRoofLevel() {
+//        return roofLevel;
+//    }
+//
+//    public void setRoofLevel(int roofLevel) {
+//        this.roofLevel = roofLevel;
+//    }
+//
+//    public int getPalisadeLevel() {
+//        return palisadeLevel;
+//    }
+//
+//    public void setPalisadeLevel(int palisadeLevel) {
+//        this.palisadeLevel = palisadeLevel;
+//    }
+//
+//    public int getWeaponLevel() {
+//        return weaponLevel;
+//    }
+//
+//    public void setWeaponLevel(int weaponLevel) {
+//        this.weaponLevel = weaponLevel;
+//    }
+//
+//    public int getFoodProduction() {
+//        return foodProduction;
+//    }
+//
+//    public void setFoodProduction(int foodProduction) {
+//        this.foodProduction = foodProduction;
+//    }
+//
+//    public int getWoodProduction() {
+//        return woodProduction;
+//    }
+//
+//    public void setWoodProduction(int woodProduction) {
+//        this.woodProduction = woodProduction;
+//    }
 }

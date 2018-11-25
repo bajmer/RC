@@ -130,6 +130,7 @@ class GameInitializer {
                             ConfigReader.loadValue(SpecialSkillType.class, CHARACTER_PREFIX, profession.toString(), "SKILL_1"),
                             ConfigReader.loadValue(SpecialSkillType.class, CHARACTER_PREFIX, profession.toString(), "SKILL_2"),
                             ConfigReader.loadValue(SpecialSkillType.class, CHARACTER_PREFIX, profession.toString(), "SKILL_3"),
+                            ConfigReader.loadValue(SpecialSkillType.class, CHARACTER_PREFIX, profession.toString(), "SKILL_4"),
                             ConfigReader.loadValue(SpecialSkillType.class, CHARACTER_PREFIX, profession.toString(), "SKILL_4")
                     )),
                     moraleDownIntArray,

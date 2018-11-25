@@ -1,18 +1,25 @@
 package model.character.additional;
 
 import model.character.Character;
+import model.elements.Marker;
+import model.enums.elements.MarkerType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FridayCharacter implements Character {
     private Logger logger = LogManager.getLogger(FridayCharacter.class);
 
     private int lives;
     private int determination;
+    private List<Marker> markers = new ArrayList<>();
 
     public FridayCharacter() {
         this.lives = 4;
         this.determination = 0;
+        this.markers.add(new Marker(MarkerType.valueOf("FRIDAY_MARKER")));
     }
 
     public int getLives() {
@@ -29,6 +36,15 @@ public class FridayCharacter implements Character {
 
     public void setDetermination(int determination) {
         this.determination = determination;
+    }
+
+    @Override
+    public List<Marker> getMarkers() {
+        return markers;
+    }
+
+    public void setMarkers(List<Marker> markers) {
+        this.markers = markers;
     }
 
     @Override

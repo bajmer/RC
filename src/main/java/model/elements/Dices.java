@@ -13,6 +13,8 @@ import static model.enums.elements.dices.DicesGroupType.*;
 
 public class Dices {
     private Logger logger = LogManager.getLogger(Dices.class);
+    private final String SEPARATOR = ",";
+    private final String CONFIG = "DICE";
 
     private Map<DicesGroupType, Map<DiceType, List<DiceWallType>>> diceMap = new HashMap<>();
 
@@ -21,9 +23,9 @@ public class Dices {
         List<DiceWallType> weatherRainDiceWalls = new ArrayList<>();
         List<DiceWallType> weatherSnowDiceWalls = new ArrayList<>();
         List<DiceWallType> weatherAnimalDiceWalls = new ArrayList<>();
-        String[] weatherRainDiceWallsString = ConfigReader.loadValue(String.class, "DICE", String.valueOf(WEATHER_DICES), "WALL_1").split(",");
-        String[] weatherSnowDiceWallsString = ConfigReader.loadValue(String.class, "DICE", String.valueOf(WEATHER_DICES), "WALL_2").split(",");
-        String[] weatherAnimalDiceWallsString = ConfigReader.loadValue(String.class, "DICE", String.valueOf(WEATHER_DICES), "WALL_3").split(",");
+        String[] weatherRainDiceWallsString = ConfigReader.loadValue(String.class, CONFIG, String.valueOf(WEATHER_DICES), "WALL_1").split(SEPARATOR);
+        String[] weatherSnowDiceWallsString = ConfigReader.loadValue(String.class, CONFIG, String.valueOf(WEATHER_DICES), "WALL_2").split(SEPARATOR);
+        String[] weatherAnimalDiceWallsString = ConfigReader.loadValue(String.class, CONFIG, String.valueOf(WEATHER_DICES), "WALL_3").split(SEPARATOR);
         Arrays.stream(weatherRainDiceWallsString).forEach(s -> weatherRainDiceWalls.add(DiceWallType.valueOf(s)));
         Arrays.stream(weatherSnowDiceWallsString).forEach(s -> weatherSnowDiceWalls.add(DiceWallType.valueOf(s)));
         Arrays.stream(weatherAnimalDiceWallsString).forEach(s -> weatherAnimalDiceWalls.add(DiceWallType.valueOf(s)));
@@ -41,9 +43,9 @@ public class Dices {
         Map<DiceType, List<DiceWallType>> buildingSuccessMap = new HashMap<>();
         Map<DiceType, List<DiceWallType>> buildingAdventuresMap = new HashMap<>();
         Map<DiceType, List<DiceWallType>> buildingWoundMap = new HashMap<>();
-        String[] buildingSuccessDiceWallsString = ConfigReader.loadValue(String.class, "DICE", String.valueOf(BUILDING_DICES), "WALL_1").split(",");
-        String[] buildingAdventureDiceWallsString = ConfigReader.loadValue(String.class, "DICE", String.valueOf(BUILDING_DICES), "WALL_2").split(",");
-        String[] buildingWoundDiceWallsString = ConfigReader.loadValue(String.class, "DICE", String.valueOf(BUILDING_DICES), "WALL_3").split(",");
+        String[] buildingSuccessDiceWallsString = ConfigReader.loadValue(String.class, CONFIG, String.valueOf(BUILDING_DICES), "WALL_1").split(SEPARATOR);
+        String[] buildingAdventureDiceWallsString = ConfigReader.loadValue(String.class, CONFIG, String.valueOf(BUILDING_DICES), "WALL_2").split(SEPARATOR);
+        String[] buildingWoundDiceWallsString = ConfigReader.loadValue(String.class, CONFIG, String.valueOf(BUILDING_DICES), "WALL_3").split(SEPARATOR);
         Arrays.stream(buildingSuccessDiceWallsString).forEach(s -> buildingSuccessDiceWalls.add(DiceWallType.valueOf(s)));
         Arrays.stream(buildingAdventureDiceWallsString).forEach(s -> buildingAdventureDiceWalls.add(DiceWallType.valueOf(s)));
         Arrays.stream(buildingWoundDiceWallsString).forEach(s -> buildingWoundDiceWalls.add(DiceWallType.valueOf(s)));
@@ -58,9 +60,9 @@ public class Dices {
         Map<DiceType, List<DiceWallType>> explorationSuccessMap = new HashMap<>();
         Map<DiceType, List<DiceWallType>> explorationAdventuresMap = new HashMap<>();
         Map<DiceType, List<DiceWallType>> explorationWoundMap = new HashMap<>();
-        String[] explorationSuccessDiceWallsString = ConfigReader.loadValue(String.class, "DICE", String.valueOf(EXPLORATION_DICES), "WALL_1").split(",");
-        String[] explorationAdventureDiceWallsString = ConfigReader.loadValue(String.class, "DICE", String.valueOf(EXPLORATION_DICES), "WALL_2").split(",");
-        String[] explorationWoundDiceWallsString = ConfigReader.loadValue(String.class, "DICE", String.valueOf(EXPLORATION_DICES), "WALL_3").split(",");
+        String[] explorationSuccessDiceWallsString = ConfigReader.loadValue(String.class, CONFIG, String.valueOf(EXPLORATION_DICES), "WALL_1").split(SEPARATOR);
+        String[] explorationAdventureDiceWallsString = ConfigReader.loadValue(String.class, CONFIG, String.valueOf(EXPLORATION_DICES), "WALL_2").split(SEPARATOR);
+        String[] explorationWoundDiceWallsString = ConfigReader.loadValue(String.class, CONFIG, String.valueOf(EXPLORATION_DICES), "WALL_3").split(SEPARATOR);
         Arrays.stream(explorationSuccessDiceWallsString).forEach(s -> explorationSuccessDiceWalls.add(DiceWallType.valueOf(s)));
         Arrays.stream(explorationAdventureDiceWallsString).forEach(s -> explorationAdventureDiceWalls.add(DiceWallType.valueOf(s)));
         Arrays.stream(explorationWoundDiceWallsString).forEach(s -> explorationWoundDiceWalls.add(DiceWallType.valueOf(s)));
@@ -75,9 +77,9 @@ public class Dices {
         Map<DiceType, List<DiceWallType>> resourcesSuccessMap = new HashMap<>();
         Map<DiceType, List<DiceWallType>> resourcesAdventuresMap = new HashMap<>();
         Map<DiceType, List<DiceWallType>> resourcesWoundMap = new HashMap<>();
-        String[] resourcesSuccessDiceWallsString = ConfigReader.loadValue(String.class, "DICE", String.valueOf(RESOURCES_DICES), "WALL_1").split(",");
-        String[] resourcesAdventureDiceWallsString = ConfigReader.loadValue(String.class, "DICE", String.valueOf(RESOURCES_DICES), "WALL_2").split(",");
-        String[] resourcesWoundDiceWallsString = ConfigReader.loadValue(String.class, "DICE", String.valueOf(RESOURCES_DICES), "WALL_3").split(",");
+        String[] resourcesSuccessDiceWallsString = ConfigReader.loadValue(String.class, CONFIG, String.valueOf(RESOURCES_DICES), "WALL_1").split(SEPARATOR);
+        String[] resourcesAdventureDiceWallsString = ConfigReader.loadValue(String.class, CONFIG, String.valueOf(RESOURCES_DICES), "WALL_2").split(SEPARATOR);
+        String[] resourcesWoundDiceWallsString = ConfigReader.loadValue(String.class, CONFIG, String.valueOf(RESOURCES_DICES), "WALL_3").split(SEPARATOR);
         Arrays.stream(resourcesSuccessDiceWallsString).forEach(s -> resourcesSuccessDiceWalls.add(DiceWallType.valueOf(s)));
         Arrays.stream(resourcesAdventureDiceWallsString).forEach(s -> resourcesAdventureDiceWalls.add(DiceWallType.valueOf(s)));
         Arrays.stream(resourcesWoundDiceWallsString).forEach(s -> resourcesWoundDiceWalls.add(DiceWallType.valueOf(s)));

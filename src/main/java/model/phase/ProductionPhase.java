@@ -15,12 +15,12 @@ public class ProductionPhase implements Phase {
     @Override
     public void runPhase(GlobalData globalData) {
         int foodProduction = globalData.getGameParams().getFoodProduction();
-        globalData.changeFoodLevel(foodProduction);
         logger.info("The following amount of FOOD was received: " + foodProduction);
+        globalData.changeFoodLevel(foodProduction);
 
         int woodProduction = globalData.getGameParams().getWoodProduction();
-        globalData.changeWoodLevel(woodProduction);
         logger.info("The following amount of WOOD was received: " + woodProduction);
+        globalData.changeWoodLevel(woodProduction);
     }
 
 }

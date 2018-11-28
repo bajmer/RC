@@ -1,14 +1,22 @@
 package engine.action;
 
 import model.enums.ActionType;
-import model.enums.elements.MarkerType;
-import model.requirements.Requirements;
-
-import java.util.List;
 
 public class ExplorationAction extends Action {
-    public ExplorationAction(ActionType actionType, Requirements requirements, List<MarkerType> acceptedMarkerTypes) {
-        super(actionType, requirements, acceptedMarkerTypes);
+
+    private int positionOnBoard;
+
+    public ExplorationAction(ActionType actionType, int positionOnBoard) {
+        super(actionType);
+        this.positionOnBoard = positionOnBoard;
+    }
+
+    public int getPositionOnBoard() {
+        return positionOnBoard;
+    }
+
+    public void setPositionOnBoard(int positionOnBoard) {
+        this.positionOnBoard = positionOnBoard;
     }
 
     @Override

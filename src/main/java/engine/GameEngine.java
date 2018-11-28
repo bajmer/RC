@@ -17,7 +17,7 @@ public class GameEngine implements GameEngineListener {
 
 	public void play() {
 		int i = 0;
-		while (i < 100 /*!gameOver*/) {
+		while (i < 24 /*!gameOver*/) {
 			Phase phase = PhaseHandler.nextPhase();
 			phase.initializePhase(globalData);
 			phase.runPhase(globalData);

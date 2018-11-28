@@ -1,5 +1,6 @@
 package model.data;
 
+import model.board.Board;
 import model.character.Character;
 import model.character.main.MainCharacter;
 import model.decks.Decks;
@@ -11,26 +12,31 @@ import model.elements.cards.IdeaCard;
 import model.elements.cards.StartingItemCard;
 import model.elements.cards.mystery.MysteryCard;
 import model.elements.tiles.IslandTile;
+import model.enums.TerrainType;
 import model.enums.elements.ResourceType;
 import model.resources.Resources;
 import model.scenario.Scenario;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GlobalData {
     private Logger logger = LogManager.getLogger(GlobalData.class);
 
     private Decks decks;
     private Dices dices;
+    private Board board;
     private Scenario scenario;
     private List<Character> characters;
     private List<StartingItemCard> startingItems;
     private List<IdeaCard> ideas;
     private List<IdeaCard> inventions = new ArrayList<>();
     private List<MysteryCard> treasures = new ArrayList<>();
-    private Map<Integer, IslandTile> discoveredIslandTiles = new HashMap<>();
+    private List<IslandTile> discoveredIslandTiles = new ArrayList<>();
+    private List<TerrainType> availableTerrainTypes = new ArrayList<>();
     private LinkedList<EventCard> threatActionCards = new LinkedList<>();
     private LinkedList<BeastCard> availableBeastCards = new LinkedList<>();
     private Resources availableResources = new Resources();
@@ -40,16 +46,11 @@ public class GlobalData {
     private List<Marker> availableActionHelpers = new ArrayList<>();
     private GameParams gameParams = new GameParams();
     private boolean shelter = false;
-//    private int moraleLevel = 0;
-//    private int roofLevel = 0;
-//    private int palisadeLevel = 0;
-//    private int weaponLevel = 0;
-//    private int foodProduction = 0;
-//    private int woodProduction = 0;
 
-    public GlobalData(Decks decks, Dices dices, Scenario scenario, List<Character> characters, List<StartingItemCard> startingItems, List<IdeaCard> ideas) {
+    public GlobalData(Decks decks, Dices dices, Board board, Scenario scenario, List<Character> characters, List<StartingItemCard> startingItems, List<IdeaCard> ideas) {
         this.decks = decks;
         this.dices = dices;
+        this.board = board;
         this.scenario = scenario;
         this.characters = characters;
         this.startingItems = startingItems;
@@ -168,7 +169,7 @@ public class GlobalData {
         }
     }
 
-    public void discoveredNewIslandTile(IslandTile islandTile) {
+    public void handleNewIslandTileDiscovery(IslandTile islandTile) {
         // TODO: 2018-11-22 Handle terrain type
 
         // TODO: 2018-11-22 Handle resources
@@ -179,7 +180,7 @@ public class GlobalData {
 
     }
 
-    public void movingShelterToNewTile(IslandTile targetIslandTile) {
+    public void handleMovingShelterToNewTile(IslandTile targetIslandTile) {
         // TODO: 2018-11-22 Setting wood and food production
         List<ResourceType> resources = new ArrayList<>();
         resources.add(targetIslandTile.getLeftSquareResource());
@@ -213,6 +214,14 @@ public class GlobalData {
 
     public void setDices(Dices dices) {
         this.dices = dices;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     public Scenario getScenario() {
@@ -263,12 +272,20 @@ public class GlobalData {
         this.treasures = treasures;
     }
 
-    public Map<Integer, IslandTile> getDiscoveredIslandTiles() {
+    public List<IslandTile> getDiscoveredIslandTiles() {
         return discoveredIslandTiles;
     }
 
-    public void setDiscoveredIslandTiles(Map<Integer, IslandTile> discoveredIslandTiles) {
+    public void setDiscoveredIslandTiles(List<IslandTile> discoveredIslandTiles) {
         this.discoveredIslandTiles = discoveredIslandTiles;
+    }
+
+    public List<TerrainType> getAvailableTerrainTypes() {
+        return availableTerrainTypes;
+    }
+
+    public void setAvailableTerrainTypes(List<TerrainType> availableTerrainTypes) {
+        this.availableTerrainTypes = availableTerrainTypes;
     }
 
     public LinkedList<EventCard> getThreatActionCards() {
@@ -342,52 +359,4 @@ public class GlobalData {
     public void setShelter(boolean shelter) {
         this.shelter = shelter;
     }
-
-//    public int getMoraleLevel() {
-//        return moraleLevel;
-//    }
-//
-//    public void setMoraleLevel(int moraleLevel) {
-//        this.moraleLevel = moraleLevel;
-//    }
-//
-//    public int getRoofLevel() {
-//        return roofLevel;
-//    }
-//
-//    public void setRoofLevel(int roofLevel) {
-//        this.roofLevel = roofLevel;
-//    }
-//
-//    public int getPalisadeLevel() {
-//        return palisadeLevel;
-//    }
-//
-//    public void setPalisadeLevel(int palisadeLevel) {
-//        this.palisadeLevel = palisadeLevel;
-//    }
-//
-//    public int getWeaponLevel() {
-//        return weaponLevel;
-//    }
-//
-//    public void setWeaponLevel(int weaponLevel) {
-//        this.weaponLevel = weaponLevel;
-//    }
-//
-//    public int getFoodProduction() {
-//        return foodProduction;
-//    }
-//
-//    public void setFoodProduction(int foodProduction) {
-//        this.foodProduction = foodProduction;
-//    }
-//
-//    public int getWoodProduction() {
-//        return woodProduction;
-//    }
-//
-//    public void setWoodProduction(int woodProduction) {
-//        this.woodProduction = woodProduction;
-//    }
 }

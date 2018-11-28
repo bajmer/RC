@@ -1,14 +1,14 @@
 package engine.action;
 
+import model.elements.cards.BeastCard;
 import model.enums.ActionType;
-import model.enums.elements.MarkerType;
-import model.requirements.Requirements;
-
-import java.util.List;
 
 public class HuntingAction extends Action {
-    public HuntingAction(ActionType actionType, Requirements requirements, List<MarkerType> acceptedMarkerTypes) {
-        super(actionType, requirements, acceptedMarkerTypes);
+
+    private BeastCard beastCard;
+
+    public HuntingAction(ActionType actionType) {
+        super(actionType);
     }
 
     @Override

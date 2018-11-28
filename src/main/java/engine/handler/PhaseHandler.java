@@ -12,8 +12,8 @@ public class PhaseHandler {
             new MoralePhase(),
             new ProductionPhase(),
             new ActionPhase(),
-            new NightPhase(),
-            new WeatherPhase()
+            new WeatherPhase(),
+            new NightPhase()
     ));
 
     private static Phase tmpPhase = null;
@@ -27,7 +27,6 @@ public class PhaseHandler {
     }
 
     public static Phase nextPhase() {
-        System.out.println(tmpPhase != null ? tmpPhase.getClass().getSimpleName() : "NULL");
         int imax = phases.size();
         for (int i = 0; i < imax; i++) {
             if (tmpPhase == null) {

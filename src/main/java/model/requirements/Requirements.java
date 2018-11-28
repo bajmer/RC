@@ -1,30 +1,34 @@
 package model.requirements;
 
+import model.data.GameParams;
+import model.elements.cards.IdeaCard;
 import model.enums.TerrainType;
-import model.enums.cards.IdeaType;
 import model.resources.Resources;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Requirements {
     private List<TerrainType> requiredTerrains;
-    private List<IdeaType> requiredItems;
-    private List<Resources> requiredResources;
-    private List<Integer> requiredLevels;
+    private List<IdeaCard> requiredItems;
+    private Resources requiredResources;
+    private GameParams requiredGameParams;
     private boolean requiredShelter;
-    private int minNumberOfMarkers;
-    private int maxNumberOfMarkers;
-    private int requiredNumberOfDeterminations;
 
-    public Requirements(List<TerrainType> requiredTerrains, List<IdeaType> requiredItems, List<Resources> requiredResources, List<Integer> requiredLevels, boolean requiredShelter, int minNumberOfMarkers, int maxNumberOfMarkers, int requiredNumberOfDeterminations) {
+    public Requirements() {
+        this.requiredTerrains = new ArrayList<>();
+        this.requiredItems = new ArrayList<>();
+        this.requiredResources = new Resources();
+        this.requiredGameParams = new GameParams();
+        this.requiredShelter = false;
+    }
+
+    public Requirements(List<TerrainType> requiredTerrains, List<IdeaCard> requiredItems, Resources requiredResources, GameParams requiredGameParams, boolean requiredShelter) {
         this.requiredTerrains = requiredTerrains;
         this.requiredItems = requiredItems;
         this.requiredResources = requiredResources;
-        this.requiredLevels = requiredLevels;
+        this.requiredGameParams = requiredGameParams;
         this.requiredShelter = requiredShelter;
-        this.minNumberOfMarkers = minNumberOfMarkers;
-        this.maxNumberOfMarkers = maxNumberOfMarkers;
-        this.requiredNumberOfDeterminations = requiredNumberOfDeterminations;
     }
 
     public List<TerrainType> getRequiredTerrains() {
@@ -35,28 +39,28 @@ public class Requirements {
         this.requiredTerrains = requiredTerrains;
     }
 
-    public List<IdeaType> getRequiredItems() {
+    public List<IdeaCard> getRequiredItems() {
         return requiredItems;
     }
 
-    public void setRequiredItems(List<IdeaType> requiredItems) {
+    public void setRequiredItems(List<IdeaCard> requiredItems) {
         this.requiredItems = requiredItems;
     }
 
-    public List<Resources> getRequiredResources() {
+    public Resources getRequiredResources() {
         return requiredResources;
     }
 
-    public void setRequiredResources(List<Resources> requiredResources) {
+    public void setRequiredResources(Resources requiredResources) {
         this.requiredResources = requiredResources;
     }
 
-    public List<Integer> getRequiredLevels() {
-        return requiredLevels;
+    public GameParams getRequiredGameParams() {
+        return requiredGameParams;
     }
 
-    public void setRequiredLevels(List<Integer> requiredLevels) {
-        this.requiredLevels = requiredLevels;
+    public void setRequiredGameParams(GameParams requiredGameParams) {
+        this.requiredGameParams = requiredGameParams;
     }
 
     public boolean isRequiredShelter() {
@@ -65,29 +69,5 @@ public class Requirements {
 
     public void setRequiredShelter(boolean requiredShelter) {
         this.requiredShelter = requiredShelter;
-    }
-
-    public int getMinNumberOfMarkers() {
-        return minNumberOfMarkers;
-    }
-
-    public void setMinNumberOfMarkers(int minNumberOfMarkers) {
-        this.minNumberOfMarkers = minNumberOfMarkers;
-    }
-
-    public int getMaxNumberOfMarkers() {
-        return maxNumberOfMarkers;
-    }
-
-    public void setMaxNumberOfMarkers(int maxNumberOfMarkers) {
-        this.maxNumberOfMarkers = maxNumberOfMarkers;
-    }
-
-    public int getRequiredNumberOfDeterminations() {
-        return requiredNumberOfDeterminations;
-    }
-
-    public void setRequiredNumberOfDeterminations(int requiredNumberOfDeterminations) {
-        this.requiredNumberOfDeterminations = requiredNumberOfDeterminations;
     }
 }

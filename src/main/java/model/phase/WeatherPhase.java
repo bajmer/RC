@@ -23,9 +23,11 @@ public class WeatherPhase implements Phase {
 
 	@Override
 	public void runPhase(GlobalData globalData) {
+		int scenarioID = globalData.getScenario().getId();
 		int roundNumber = globalData.getScenario().getRound();
+		String scenarioIdString = String.valueOf(scenarioID);
 		String roundNumberString = String.valueOf(roundNumber);
-		String dicesConfigString = ConfigReader.loadValue(String.class, "SCENARIO", roundNumberString, "WEATHER_ROUND_" + roundNumberString);
+		String dicesConfigString = ConfigReader.loadValue(String.class, "SCENARIO", scenarioIdString, "WEATHER_ROUND_" + roundNumberString);
 		List<DiceType> dices = new ArrayList<>();
 		if (dicesConfigString.contains(separator)) {
 			String[] dicesString = dicesConfigString.split(separator);

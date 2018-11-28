@@ -2,20 +2,17 @@ package model.elements.cards;
 
 import model.enums.ProfessionType;
 import model.enums.cards.IdeaType;
-import model.requirements.Requirements;
 
 public class IdeaCard implements Card {
     private IdeaType idea;
     private ProfessionType owner;
-    private Requirements requirements;
     private boolean initialIdea;
     private boolean transformedToItem;
     private boolean multipleUse;
 
-    public IdeaCard(IdeaType idea, ProfessionType owner, Requirements requirements, boolean initialIdea, boolean transformedToItem, boolean multipleUse) {
+    public IdeaCard(IdeaType idea, ProfessionType owner, boolean initialIdea, boolean transformedToItem, boolean multipleUse) {
         this.idea = idea;
         this.owner = owner;
-        this.requirements = requirements;
         this.initialIdea = initialIdea;
         this.transformedToItem = transformedToItem;
         this.multipleUse = multipleUse;
@@ -35,14 +32,6 @@ public class IdeaCard implements Card {
 
     public void setOwner(ProfessionType owner) {
         this.owner = owner;
-    }
-
-    public Requirements getRequirements() {
-        return requirements;
-    }
-
-    public void setRequirements(Requirements requirements) {
-        this.requirements = requirements;
     }
 
     public boolean isInitialIdea() {

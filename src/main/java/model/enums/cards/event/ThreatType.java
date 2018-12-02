@@ -1,6 +1,6 @@
 package model.enums.cards.event;
 
-public enum ThreatActionType {
+public enum ThreatType {
     SOME_ACTION,
     NONE
 }

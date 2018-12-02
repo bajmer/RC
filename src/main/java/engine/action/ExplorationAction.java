@@ -1,5 +1,6 @@
 package engine.action;
 
+import model.data.GlobalData;
 import model.enums.ActionType;
 
 public class ExplorationAction extends Action {
@@ -20,7 +21,7 @@ public class ExplorationAction extends Action {
     }
 
     @Override
-    public void performTheAction() {
+    public void performTheAction(GlobalData globalData) {
 
     }
 }

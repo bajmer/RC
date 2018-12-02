@@ -4,7 +4,7 @@ import model.character.main.MainCharacter;
 import model.data.GlobalData;
 import model.elements.cards.EventCard;
 import model.elements.tiles.IslandTile;
-import model.enums.cards.event.EventIconType;
+import model.enums.cards.event.IconType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,6 +23,7 @@ public class EventPhase implements Phase {
 			globalData.getDiscoveredIslandTiles().add(beachTile);
 			globalData.getAvailableTerrainTypes().add(beachTile.getTerrainType());
 			globalData.getBoard().getTilePositionIdToIslandTile().put(1, beachTile);
+			globalData.getBoard().getIslandTileToTilePosition().put(beachTile, 1);
 			globalData.handleNewIslandTileDiscovery(beachTile);
 			globalData.handleMovingShelterToNewTile(beachTile);
 		}
@@ -42,14 +43,14 @@ public class EventPhase implements Phase {
 		logger.info("Event: " + card.getEventEffect());
 		// TODO: 2018-11-21 Handle event
 
-		EventIconType eventIcon = card.getEventIcon();
+		IconType eventIcon = card.getEventIcon();
 		logger.info("Event icon: " + eventIcon);
 		// TODO: 2018-11-21 Handle event icon
 
 		globalData.getThreatActionCards().addFirst(card);
 		if (globalData.getThreatActionCards().size() > 2) {
 			EventCard threatCard = globalData.getThreatActionCards().removeLast();
-			logger.info("Threat effect: " + threatCard.getThreatEffect());
+			logger.info("Threat effect: " + threatCard.getThreatAction());
 			// TODO: 2018-11-21 Handle threat effect
 		}
 	}

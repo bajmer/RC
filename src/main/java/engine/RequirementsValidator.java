@@ -28,16 +28,16 @@ public class RequirementsValidator {
 		if (action instanceof BuildingAction) {
 			BuildingAction buildingAction = (BuildingAction) action;
 			if (buildingAction.getIdeaType() != null && buildingAction.getIdeaType().toString().startsWith("PARAM_")) {
-				boolean woodOrHide = gameState.getRequiredResources().getWoodAmount() >= requirements.getRequiredResources().getWoodAmount();
-				woodOrHide |= gameState.getRequiredResources().getHideAmount() >= requirements.getRequiredResources().getHideAmount();
-				ok &= woodOrHide;
+                boolean woodOrFur = gameState.getRequiredResources().getWoodAmount() >= requirements.getRequiredResources().getWoodAmount();
+                woodOrFur |= gameState.getRequiredResources().getFurAmount() >= requirements.getRequiredResources().getFurAmount();
+                ok &= woodOrFur;
 			} else {
 				ok &= gameState.getRequiredResources().getWoodAmount() >= requirements.getRequiredResources().getWoodAmount();
-				ok &= gameState.getRequiredResources().getHideAmount() >= requirements.getRequiredResources().getHideAmount();
+                ok &= gameState.getRequiredResources().getFurAmount() >= requirements.getRequiredResources().getFurAmount();
 			}
 		} else {
 			ok &= gameState.getRequiredResources().getWoodAmount() >= requirements.getRequiredResources().getWoodAmount();
-			ok &= gameState.getRequiredResources().getHideAmount() >= requirements.getRequiredResources().getHideAmount();
+            ok &= gameState.getRequiredResources().getFurAmount() >= requirements.getRequiredResources().getFurAmount();
 		}
 		ok &= !requirements.isRequiredShelter() || gameState.isRequiredShelter();
 		ok &= gameState.getRequiredGameParams().getMoraleLevel() >= requirements.getRequiredGameParams().getMoraleLevel();

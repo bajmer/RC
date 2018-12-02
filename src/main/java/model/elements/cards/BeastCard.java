@@ -7,14 +7,14 @@ public class BeastCard {
     private int strength;
     private int weaponLevelDecrease;
     private int foodAmount;
-    private int hideAmount;
+    private int furAmount;
 
-    public BeastCard(BeastType beast, int strength, int weaponLevelDecrease, int foodAmount, int hideAmount) {
+    public BeastCard(BeastType beast, int strength, int weaponLevelDecrease, int foodAmount, int furAmount) {
         this.beast = beast;
         this.strength = strength;
         this.weaponLevelDecrease = weaponLevelDecrease;
         this.foodAmount = foodAmount;
-        this.hideAmount = hideAmount;
+        this.furAmount = furAmount;
     }
 
     public BeastType getBeast() {
@@ -49,11 +49,11 @@ public class BeastCard {
         this.foodAmount = foodAmount;
     }
 
-    public int getHideAmount() {
-        return hideAmount;
+    public int getFurAmount() {
+        return furAmount;
     }
 
-    public void setHideAmount(int hideAmount) {
-        this.hideAmount = hideAmount;
+    public void setFurAmount(int furAmount) {
+        this.furAmount = furAmount;
     }
 }

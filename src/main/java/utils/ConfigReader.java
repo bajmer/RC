@@ -3,10 +3,9 @@ package utils;
 import model.enums.ProfessionType;
 import model.enums.SpecialSkillType;
 import model.enums.TerrainType;
-import model.enums.cards.event.EventEffectType;
-import model.enums.cards.event.EventIconType;
-import model.enums.cards.event.ThreatActionType;
-import model.enums.cards.event.ThreatEffectType;
+import model.enums.cards.event.EventType;
+import model.enums.cards.event.IconType;
+import model.enums.cards.event.ThreatType;
 import model.enums.elements.ResourceType;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -57,14 +56,12 @@ public class ConfigReader {
 			value = outputClass.cast(Boolean.valueOf(stringValue));
 		} else if (outputClass == SpecialSkillType.class) {
 			value = outputClass.cast(SpecialSkillType.valueOf(stringValue));
-		} else if (outputClass == EventEffectType.class) {
-			value = outputClass.cast(EventEffectType.valueOf(stringValue));
-		} else if (outputClass == EventIconType.class) {
-			value = outputClass.cast(EventIconType.valueOf(stringValue));
-		} else if (outputClass == ThreatActionType.class) {
-			value = outputClass.cast(ThreatActionType.valueOf(stringValue));
-		} else if (outputClass == ThreatEffectType.class) {
-			value = outputClass.cast(ThreatEffectType.valueOf(stringValue));
+        } else if (outputClass == EventType.class) {
+            value = outputClass.cast(EventType.valueOf(stringValue));
+        } else if (outputClass == IconType.class) {
+            value = outputClass.cast(IconType.valueOf(stringValue));
+        } else if (outputClass == ThreatType.class) {
+            value = outputClass.cast(ThreatType.valueOf(stringValue));
 		} else if (outputClass == TerrainType.class) {
 			value = outputClass.cast(TerrainType.valueOf(stringValue));
 		} else if (outputClass == ResourceType.class) {

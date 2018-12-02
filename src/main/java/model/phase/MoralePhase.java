@@ -18,6 +18,7 @@ public class MoralePhase implements Phase {
         logger.info("Morale level: " + morale);
 
         globalData.getFirstPlayer().changeDeterminationLevel(morale);
+        globalData.decreaseMoraleAfterReducingCharacterLives(morale, globalData.getFirstPlayer());
     }
 
 }

@@ -13,8 +13,8 @@ import static model.enums.elements.dices.DicesGroupType.*;
 
 public class Dices {
     private Logger logger = LogManager.getLogger(Dices.class);
-    private final String SEPARATOR = "-";
-    private final String CONFIG = "DICE";
+    private static final String SEPARATOR = "-";
+    private static final String CONFIG = "DICE";
 
     private Map<DicesGroupType, List<Map<DiceType, List<DiceWallType>>>> diceMap = new HashMap<>();
 
@@ -91,19 +91,6 @@ public class Dices {
         diceMap.put(BUILDING_DICES, new ArrayList<>(Arrays.asList(buildingSuccessMap, buildingAdventuresMap, buildingWoundMap)));
         diceMap.put(EXPLORATION_DICES, new ArrayList<>(Arrays.asList(explorationSuccessMap, explorationAdventuresMap, explorationWoundMap)));
         diceMap.put(RESOURCES_DICES, new ArrayList<>(Arrays.asList(resourcesSuccessMap, resourcesAdventuresMap, resourcesWoundMap)));
-
-//        diceMap.put(WEATHER_DICES, weatherRainMap);
-//        diceMap.put(WEATHER_DICES, weatherSnowMap);
-//        diceMap.put(WEATHER_DICES, weatherAnimalMap);
-//        diceMap.put(BUILDING_DICES, buildingSuccessMap);
-//        diceMap.put(BUILDING_DICES, buildingAdventuresMap);
-//        diceMap.put(BUILDING_DICES, buildingWoundMap);
-//        diceMap.put(EXPLORATION_DICES, explorationSuccessMap);
-//        diceMap.put(EXPLORATION_DICES, explorationAdventuresMap);
-//        diceMap.put(EXPLORATION_DICES, explorationWoundMap);
-//        diceMap.put(RESOURCES_DICES, resourcesSuccessMap);
-//        diceMap.put(RESOURCES_DICES, resourcesAdventuresMap);
-//        diceMap.put(RESOURCES_DICES, resourcesWoundMap);
     }
 
     public DiceWallType roll(DicesGroupType groupType, DiceType diceType) {

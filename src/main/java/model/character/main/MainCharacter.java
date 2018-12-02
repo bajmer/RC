@@ -1,7 +1,6 @@
 package model.character.main;
 
 import model.character.Character;
-import model.data.GlobalData;
 import model.elements.Marker;
 import model.enums.ProfessionType;
 import model.enums.SexType;
@@ -24,7 +23,6 @@ public class MainCharacter implements Character {
     private int beginLives;
     private int determination;
     private List<Marker> markers = new ArrayList<>();
-    private GlobalData globalData;
 
     public MainCharacter(ProfessionType profession, SexType sex, List<SpecialSkillType> specialSkills, List<Integer> moraleDown, int lives) {
         this.profession = profession;
@@ -87,14 +85,6 @@ public class MainCharacter implements Character {
         this.determination = determination;
     }
 
-    public GlobalData getGlobalData() {
-        return globalData;
-    }
-
-    public void setGlobalData(GlobalData globalData) {
-        this.globalData = globalData;
-    }
-
     @Override
     public List<Marker> getMarkers() {
         return markers;
@@ -106,13 +96,13 @@ public class MainCharacter implements Character {
 
     @Override
     public void changeLivesLevel(int value) {
-        if (value < 0) {
-            for (int i = lives; i >= lives + value; i--) {
-                if (moraleDown.contains(i)) {
-                    globalData.changeMoraleLevel(-1);
-                }
-            }
-        }
+//        if (value < 0) {
+//            for (int i = lives; i >= lives + value; i--) {
+//                if (moraleDown.contains(i)) {
+//                    globalData.changeMoraleLevel(-1);
+//                }
+//            }
+//        }
         lives += value;
         if (lives > beginLives) {
             lives = beginLives;

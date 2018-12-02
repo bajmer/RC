@@ -1,6 +1,6 @@
 package model.enums.cards.event;
 
-public enum EventIconType {
+public enum IconType {
     NONE,
     BOOK,
     BUILDING_ADVENTURE,

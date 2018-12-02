@@ -37,7 +37,7 @@ public class ActionPhase implements Phase {
         tmpResources.setFoodAmount(globalData.getAvailableResources().getFoodAmount());
         tmpResources.setLongTermFoodAmount(globalData.getAvailableResources().getLongTermFoodAmount());
         tmpResources.setWoodAmount(globalData.getAvailableResources().getWoodAmount());
-        tmpResources.setHideAmount(globalData.getAvailableResources().getHideAmount());
+        tmpResources.setFurAmount(globalData.getAvailableResources().getFurAmount());
 
         // Preparing markers
         globalData.getCharacters().forEach(character -> allMarkers.addAll(character.getMarkers()));
@@ -57,7 +57,8 @@ public class ActionPhase implements Phase {
         while (!ready) {
             updateActionsAvailability(globalData);
             Action chosenAction = chooseAction();
-            List<Marker> chosenMarkers = chooseMarkers(chosenAction);
+            int minMarkersNumber = calculateMinMarkersNumber(chosenAction, globalData);
+            List<Marker> chosenMarkers = chooseMarkers(chosenAction, minMarkersNumber);
             chosenAction.setAssignedMarkers(chosenMarkers);
             handleAction(chosenAction);
             updateTmpResources(chosenAction);
@@ -85,12 +86,40 @@ public class ActionPhase implements Phase {
         return possibleActions.get(0); // TODO: 2018-11-28
     }
 
-    private List<Marker> chooseMarkers(Action action) {
+    private List<Marker> chooseMarkers(Action action, int minMarkersNumber) {
         List<Marker> possibleMarkers = allMarkers.stream()
                 .filter(marker -> action.getAcceptedMarkerTypes().contains(marker.getMarkerType()))
                 .collect(Collectors.toList());
 
         return new ArrayList<>(); // TODO: 2018-11-28
+    }
+
+    private int calculateMinMarkersNumber(Action action, GlobalData globalData) {
+        int number = 0;
+        if (action instanceof ThreatAction) {
+            number = 1;
+        } else if (action instanceof HuntingAction) {
+            number = 2;
+        } else if (action instanceof BuildingAction) {
+            number = 1;
+        } else if (action instanceof ResourcesAction) {
+            ResourcesAction resourcesAction = (ResourcesAction) action;
+            number = globalData.getBoard().getDistancesBetweenTilesPositions().get(new ArrayList<>(Arrays.asList(
+                    globalData.getBoard().getIslandTileToTilePosition().get(globalData.getCamp()),
+                    resourcesAction.getPositionOnBoard()
+            )));
+        } else if (action instanceof ExplorationAction) {
+            ExplorationAction explorationAction = (ExplorationAction) action;
+            number = globalData.getBoard().getDistancesBetweenTilesPositions().get(new ArrayList<>(Arrays.asList(
+                    globalData.getBoard().getIslandTileToTilePosition().get(globalData.getCamp()),
+                    explorationAction.getPositionOnBoard()
+            )));
+        } else if (action instanceof CampOrderingAction) {
+            number = 1;
+        } else if (action instanceof RestingAction) {
+            number = 1;
+        }
+        return number;
     }
 
     private void handleAction(Action chosenAction) {
@@ -115,15 +144,15 @@ public class ActionPhase implements Phase {
 
     private void updateTmpResources(Action action) {
         int tmpWood = tmpResources.getWoodAmount();
-        int tmpHide = tmpResources.getHideAmount();
+        int tmpFur = tmpResources.getFurAmount();
         int tmpFood = tmpResources.getFoodAmount();
         int tmpLongTermFood = tmpResources.getLongTermFoodAmount();
         int requiredWood = action.getRequirements().getRequiredResources().getWoodAmount();
-        int requiredHide = action.getRequirements().getRequiredResources().getHideAmount();
+        int requiredFur = action.getRequirements().getRequiredResources().getFurAmount();
         int requiredFood = action.getRequirements().getRequiredResources().getFoodAmount();
         int requiredLongTermFood = action.getRequirements().getRequiredResources().getLongTermFoodAmount();
         tmpResources.setWoodAmount(tmpWood - requiredWood);
-        tmpResources.setHideAmount(tmpHide - requiredHide);
+        tmpResources.setFurAmount(tmpFur - requiredFur);
         tmpResources.setFoodAmount(tmpFood - requiredFood);
         tmpResources.setLongTermFoodAmount(tmpLongTermFood - requiredLongTermFood);
     }
@@ -185,6 +214,6 @@ public class ActionPhase implements Phase {
     public void runPhase(GlobalData globalData) {
 
         // TODO: 2018-11-23 Handle actions
-        actionsToPerform.forEach(Action::performTheAction);
+        actionsToPerform.forEach(action -> action.performTheAction(globalData));
     }
 }

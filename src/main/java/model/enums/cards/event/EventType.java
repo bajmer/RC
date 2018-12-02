@@ -1,6 +1,6 @@
 package model.enums.cards.event;
 
-public enum EventEffectType {
+public enum EventType {
     FOOD_CRATES,
     WRECKED_LIFEBOAT,
     CAPTAINS_CHEST,

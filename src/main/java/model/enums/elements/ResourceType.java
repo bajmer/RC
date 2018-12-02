@@ -4,6 +4,6 @@ public enum ResourceType {
     WOOD,
     FOOD,
     LT_FOOD,
-    HIDE,
+    FUR,
     ANIMAL
 }

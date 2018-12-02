@@ -7,33 +7,14 @@ import model.character.main.MainCharacter;
 import model.data.GlobalData;
 import model.decks.Decks;
 import model.elements.Dices;
-import model.elements.cards.BeastCard;
-import model.elements.cards.EventCard;
-import model.elements.cards.IdeaCard;
-import model.elements.cards.StartingItemCard;
-import model.elements.cards.adventure.BuildingAdventureCard;
-import model.elements.cards.adventure.ExplorationAdventureCard;
-import model.elements.cards.adventure.ResourcesAdventureCard;
-import model.elements.cards.mystery.MysteryCard;
-import model.elements.cards.mystery.MysteryMonsterCard;
-import model.elements.cards.mystery.MysteryTrapCard;
-import model.elements.cards.mystery.MysteryTreasureCard;
+import model.elements.cards.*;
 import model.elements.tiles.DiscoveryToken;
 import model.elements.tiles.IslandTile;
 import model.enums.*;
-import model.enums.cards.BeastType;
-import model.enums.cards.IdeaType;
-import model.enums.cards.StartingItemType;
-import model.enums.cards.adventure.BuildingAdventureType;
-import model.enums.cards.adventure.ExplorationAdventureType;
-import model.enums.cards.adventure.ResourcesAdventureType;
-import model.enums.cards.event.EventEffectType;
-import model.enums.cards.event.EventIconType;
-import model.enums.cards.event.ThreatActionType;
-import model.enums.cards.event.ThreatEffectType;
-import model.enums.cards.mystery.MysteryMonsterType;
-import model.enums.cards.mystery.MysteryTrapType;
-import model.enums.cards.mystery.MysteryTreasureType;
+import model.enums.cards.*;
+import model.enums.cards.event.EventType;
+import model.enums.cards.event.IconType;
+import model.enums.cards.event.ThreatType;
 import model.enums.elements.ResourceType;
 import model.options.Options;
 import model.scenario.Scenario;
@@ -43,7 +24,7 @@ import utils.ConfigReader;
 
 import java.util.*;
 
-import static model.enums.cards.event.EventIconType.*;
+import static model.enums.cards.event.IconType.*;
 
 class GameInitializer {
 	private final String IDEA_PREFIX = "IDEA";
@@ -51,9 +32,7 @@ class GameInitializer {
 	private final String SCENARIO_PREFIX = "SCENARIO";
 	private final String CHARACTER_PREFIX = "CHARACTER";
 	private final String EVENT_PREFIX = "EVENT";
-	private final String ADV_BUILDING_PREFIX = "ADV_BUILDING";
-	private final String ADV_EXPLORATION_PREFIX = "ADV_EXPLORATION";
-	private final String ADV_RESOURCES_PREFIX = "ADV_RESOURCES";
+	private final String ADVENTURE_PREFIX = "ADVENTURE";
 	private final String BEAST_PREFIX = "BEAST";
 	private final String ISLAND_PREFIX = "ISLAND";
 	private Logger logger = LogManager.getLogger(GameInitializer.class);
@@ -76,9 +55,9 @@ class GameInitializer {
 
 //		creating all stacks
 		LinkedList<EventCard> eventsDeck = createEventsDeck(scenario.getAllRounds());
-		LinkedList<BuildingAdventureCard> buildingAdventuresDeck = createBuildingAdventuresDeck();
-		LinkedList<ExplorationAdventureCard> explorationAdventuresDeck = createExplorationAdventuresDeck();
-		LinkedList<ResourcesAdventureCard> resourcesAdventuresDeck = createResourcesAdventuresDeck();
+		LinkedList<AdventureCard> buildingAdventuresDeck = createBuildingAdventuresDeck();
+		LinkedList<AdventureCard> explorationAdventuresDeck = createExplorationAdventuresDeck();
+		LinkedList<AdventureCard> resourcesAdventuresDeck = createResourcesAdventuresDeck();
 		LinkedList<BeastCard> beastsDeck = createBeastsDeck();
 		LinkedList<MysteryCard> mysteriesDeck = createMysteriesDeck();
 		LinkedList<DiscoveryToken> discoveriesStack = createDiscoveriesStack();
@@ -168,11 +147,10 @@ class GameInitializer {
 
 	private LinkedList<EventCard> createEventsDeck(int scenarioAllRounds) {
 		LinkedList<EventCard> allEventsDeck = new LinkedList<>();
-		Arrays.asList(EventEffectType.values()).forEach(eventEffectType -> allEventsDeck.add(new EventCard(
+		Arrays.asList(EventType.values()).forEach(eventEffectType -> allEventsDeck.add(new EventCard(
 				eventEffectType,
-				ConfigReader.loadValue(EventIconType.class, EVENT_PREFIX, eventEffectType.toString(), "EVENT_ICON"),
-				ConfigReader.loadValue(ThreatActionType.class, EVENT_PREFIX, eventEffectType.toString(), "THREAT_ACTION"),
-				ConfigReader.loadValue(ThreatEffectType.class, EVENT_PREFIX, eventEffectType.toString(), "THREAT_EFFECT")
+				ConfigReader.loadValue(IconType.class, EVENT_PREFIX, eventEffectType.toString(), "EVENT_ICON"),
+				ConfigReader.loadValue(ThreatType.class, EVENT_PREFIX, eventEffectType.toString(), "THREAT_ACTION")
 		)));
 		Collections.shuffle(allEventsDeck);
 
@@ -205,12 +183,13 @@ class GameInitializer {
 		return eventsDeck;
 	}
 
-	private LinkedList<BuildingAdventureCard> createBuildingAdventuresDeck() {
-		LinkedList<BuildingAdventureCard> buildingAdventuresDeck = new LinkedList<>();
-		Arrays.asList(BuildingAdventureType.values()).forEach(buildingAdventureType -> buildingAdventuresDeck.add(
-				new BuildingAdventureCard(
-						buildingAdventureType,
-						ConfigReader.loadValue(EventEffectType.class, ADV_BUILDING_PREFIX, buildingAdventureType.toString(), "EVENT_NAME")
+	private LinkedList<AdventureCard> createBuildingAdventuresDeck() {
+		LinkedList<AdventureCard> buildingAdventuresDeck = new LinkedList<>();
+		Arrays.stream(AdventureType.values())
+				.filter(adventureType -> adventureType.toString().startsWith("BUILD_"))
+				.forEach(adventureType -> buildingAdventuresDeck.add(new AdventureCard(
+						adventureType,
+						ConfigReader.loadValue(EventType.class, ADVENTURE_PREFIX, adventureType.toString(), "EVENT_NAME")
 				)
 		));
 		Collections.shuffle(buildingAdventuresDeck);
@@ -219,12 +198,13 @@ class GameInitializer {
 		return buildingAdventuresDeck;
 	}
 
-	private LinkedList<ExplorationAdventureCard> createExplorationAdventuresDeck() {
-		LinkedList<ExplorationAdventureCard> explorationAdventuresDeck = new LinkedList<>();
-		Arrays.asList(ExplorationAdventureType.values()).forEach(explorationAdventureType -> explorationAdventuresDeck.add(
-				new ExplorationAdventureCard(
-						explorationAdventureType,
-						ConfigReader.loadValue(EventEffectType.class, ADV_EXPLORATION_PREFIX, explorationAdventureType.toString(), "EVENT_NAME")
+	private LinkedList<AdventureCard> createExplorationAdventuresDeck() {
+		LinkedList<AdventureCard> explorationAdventuresDeck = new LinkedList<>();
+		Arrays.stream(AdventureType.values())
+				.filter(adventureType -> adventureType.toString().startsWith("ADV_"))
+				.forEach(adventureType -> explorationAdventuresDeck.add(new AdventureCard(
+						adventureType,
+						ConfigReader.loadValue(EventType.class, ADVENTURE_PREFIX, adventureType.toString(), "EVENT_NAME")
 				)
 		));
 		Collections.shuffle(explorationAdventuresDeck);
@@ -233,12 +213,13 @@ class GameInitializer {
 		return explorationAdventuresDeck;
 	}
 
-	private LinkedList<ResourcesAdventureCard> createResourcesAdventuresDeck() {
-		LinkedList<ResourcesAdventureCard> resourcesAdventuresDeck = new LinkedList<>();
-		Arrays.asList(ResourcesAdventureType.values()).forEach(resourcesAdventureType -> resourcesAdventuresDeck.add(
-				new ResourcesAdventureCard(
-						resourcesAdventureType,
-						ConfigReader.loadValue(EventEffectType.class, ADV_RESOURCES_PREFIX, resourcesAdventureType.toString(), "EVENT_NAME")
+	private LinkedList<AdventureCard> createResourcesAdventuresDeck() {
+		LinkedList<AdventureCard> resourcesAdventuresDeck = new LinkedList<>();
+		Arrays.stream(AdventureType.values())
+				.filter(adventureType -> adventureType.toString().startsWith("RES_"))
+				.forEach(adventureType -> resourcesAdventuresDeck.add(new AdventureCard(
+						adventureType,
+						ConfigReader.loadValue(EventType.class, ADVENTURE_PREFIX, adventureType.toString(), "EVENT_NAME")
 				)
 		));
 		Collections.shuffle(resourcesAdventuresDeck);
@@ -264,9 +245,7 @@ class GameInitializer {
 
 	private LinkedList<MysteryCard> createMysteriesDeck() {
 		LinkedList<MysteryCard> mysteriesDeck = new LinkedList<>();
-		Arrays.asList(MysteryTreasureType.values()).forEach(mysteryTreasureType -> mysteriesDeck.add(new MysteryTreasureCard(mysteryTreasureType)));
-		Arrays.asList(MysteryMonsterType.values()).forEach(mysteryMonsterType -> mysteriesDeck.add(new MysteryMonsterCard(mysteryMonsterType)));
-		Arrays.asList(MysteryTrapType.values()).forEach(mysteryTrapType -> mysteriesDeck.add(new MysteryTrapCard(mysteryTrapType)));
+		Arrays.asList(MysteryType.values()).forEach(mysteryType -> mysteriesDeck.add(new model.elements.cards.MysteryCard(mysteryType)));
 		Collections.shuffle(mysteriesDeck);
 
 		logger.info("MYSTERIES DECK has been created.");

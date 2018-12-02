@@ -1,52 +1,53 @@
 package model.elements.cards;
 
-import model.enums.cards.event.EventEffectType;
-import model.enums.cards.event.EventIconType;
-import model.enums.cards.event.ThreatActionType;
-import model.enums.cards.event.ThreatEffectType;
+import model.enums.cards.event.EventType;
+import model.enums.cards.event.IconType;
+import model.enums.cards.event.ThreatType;
 
 public class EventCard implements Card {
-    private EventEffectType eventEffect;
-    private EventIconType eventIcon;
-    private ThreatActionType threatAction;
-    private ThreatEffectType threatEffect;
+    private EventType eventEffect;
+    private IconType eventIcon;
+    private ThreatType threatAction;
 
-    public EventCard(EventEffectType eventEffect, EventIconType eventIcon, ThreatActionType threatAction, ThreatEffectType threatEffect) {
+    public EventCard(EventType eventEffect, IconType eventIcon, ThreatType threatAction) {
         this.eventEffect = eventEffect;
         this.eventIcon = eventIcon;
         this.threatAction = threatAction;
-        this.threatEffect = threatEffect;
     }
 
-    public EventEffectType getEventEffect() {
+    public EventType getEventEffect() {
         return eventEffect;
     }
 
-    public void setEventEffect(EventEffectType eventEffect) {
+    public void setEventEffect(EventType eventEffect) {
         this.eventEffect = eventEffect;
     }
 
-    public EventIconType getEventIcon() {
+    public IconType getEventIcon() {
         return eventIcon;
     }
 
-    public void setEventIcon(EventIconType eventIcon) {
+    public void setEventIcon(IconType eventIcon) {
         this.eventIcon = eventIcon;
     }
 
-    public ThreatActionType getThreatAction() {
+    public ThreatType getThreatAction() {
         return threatAction;
     }
 
-    public void setThreatAction(ThreatActionType threatAction) {
+    public void setThreatAction(ThreatType threatAction) {
         this.threatAction = threatAction;
     }
 
-    public ThreatEffectType getThreatEffect() {
-        return threatEffect;
+    public void handleEvent() {
+
     }
 
-    public void setThreatEffect(ThreatEffectType threatEffect) {
-        this.threatEffect = threatEffect;
+    public void handleIcon() {
+
+    }
+
+    public void handleThreat() {
+
     }
 }

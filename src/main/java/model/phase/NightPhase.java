@@ -2,16 +2,17 @@ package model.phase;
 
 import model.character.main.MainCharacter;
 import model.data.GlobalData;
-import model.elements.cards.mystery.MysteryTreasureCard;
 import model.elements.tiles.IslandTile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static model.enums.cards.IdeaType.CELLAR;
-import static model.enums.cards.mystery.MysteryTreasureType.BARREL;
-import static model.enums.cards.mystery.MysteryTreasureType.BOXES;
+import static model.enums.cards.MysteryType.TREAS_BARREL;
+import static model.enums.cards.MysteryType.TREAS_BOXES;
 
 public class NightPhase implements Phase {
     private Logger logger = LogManager.getLogger(NightPhase.class);
@@ -29,8 +30,12 @@ public class NightPhase implements Phase {
         int allFoodAmount = foodAmount + ltFoodAmount;
 
         if (requiredFood > allFoodAmount) {
-            // TODO: 2018-11-23 Handle choosing starving characters
             globalData.changeFoodLevel(-allFoodAmount);
+            List<MainCharacter> starvingCharacters = new ArrayList<>(); // TODO: ... = chooseStarvingCharacters(requiredFood - allFoodAmount);
+            starvingCharacters.forEach(character -> {
+                character.changeLivesLevel(-2);
+                globalData.decreaseMoraleAfterReducingCharacterLives(-2, character);
+            });
         } else {
             globalData.changeFoodLevel(-requiredFood);
         }
@@ -40,17 +45,13 @@ public class NightPhase implements Phase {
         IslandTile camp = globalData.getCamp();
         if (!globalData.isShelter() && !camp.isNaturalShelter()) {
             logger.info("No shelter! Everyone is spending the night under the open sky!");
-            globalData.getCharacters().stream()
-                    .filter(character -> character instanceof MainCharacter)
-                    .forEach(character -> character.changeLivesLevel(-1));
+            globalData.reduceLivesLevelOfAllMainCharacters(-1);
         }
 
         boolean canStorageFood = globalData.getInventions().stream()
                 .anyMatch(invention -> Arrays.asList(CELLAR/*todo Other inventions*/).contains(invention.getIdea()));
         canStorageFood |= globalData.getTreasures().stream()
-                .filter(mysteryCard -> mysteryCard instanceof MysteryTreasureCard)
-                .map(MysteryTreasureCard.class::cast)
-                .anyMatch(treasure -> Arrays.asList(BARREL, BOXES).contains(treasure.getTreasureType()));
+                .anyMatch(treasure -> Arrays.asList(TREAS_BARREL, TREAS_BOXES).contains(treasure.getMystery()));
 
         if (!canStorageFood) {
             logger.info("You cannot store food. All fresh food has broken.");

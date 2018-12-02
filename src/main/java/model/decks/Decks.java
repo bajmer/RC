@@ -1,12 +1,6 @@
 package model.decks;
 
-import model.elements.cards.BeastCard;
-import model.elements.cards.EventCard;
-import model.elements.cards.IdeaCard;
-import model.elements.cards.adventure.BuildingAdventureCard;
-import model.elements.cards.adventure.ExplorationAdventureCard;
-import model.elements.cards.adventure.ResourcesAdventureCard;
-import model.elements.cards.mystery.MysteryCard;
+import model.elements.cards.*;
 import model.elements.tiles.DiscoveryToken;
 import model.elements.tiles.IslandTile;
 
@@ -14,16 +8,16 @@ import java.util.LinkedList;
 
 public class Decks {
     private LinkedList<EventCard> eventCardsDeck;
-    private LinkedList<BuildingAdventureCard> buildingAdventureCardsDeck;
-    private LinkedList<ExplorationAdventureCard> explorationAdventureCardsDeck;
-    private LinkedList<ResourcesAdventureCard> resourcesAdventureCardsDeck;
+    private LinkedList<AdventureCard> buildingAdventureCardsDeck;
+    private LinkedList<AdventureCard> explorationAdventureCardsDeck;
+    private LinkedList<AdventureCard> resourcesAdventureCardsDeck;
     private LinkedList<BeastCard> beastCardsDeck;
     private LinkedList<MysteryCard> mysteryCardsDeck;
     private LinkedList<DiscoveryToken> discoveryTokensStack;
     private LinkedList<IslandTile> islandTilesStack;
     private LinkedList<IdeaCard> ideaCardsDeck;
 
-    public Decks(LinkedList<EventCard> eventCardsDeck, LinkedList<BuildingAdventureCard> buildingAdventureCardsDeck, LinkedList<ExplorationAdventureCard> explorationAdventureCardsDeck, LinkedList<ResourcesAdventureCard> resourcesAdventureCardsDeck, LinkedList<BeastCard> beastCardsDeck, LinkedList<MysteryCard> mysteryCardsDeck, LinkedList<DiscoveryToken> discoveryTokensStack, LinkedList<IslandTile> islandTilesStack, LinkedList<IdeaCard> ideaCardsDeck) {
+    public Decks(LinkedList<EventCard> eventCardsDeck, LinkedList<AdventureCard> buildingAdventureCardsDeck, LinkedList<AdventureCard> explorationAdventureCardsDeck, LinkedList<AdventureCard> resourcesAdventureCardsDeck, LinkedList<BeastCard> beastCardsDeck, LinkedList<MysteryCard> mysteryCardsDeck, LinkedList<DiscoveryToken> discoveryTokensStack, LinkedList<IslandTile> islandTilesStack, LinkedList<IdeaCard> ideaCardsDeck) {
         this.eventCardsDeck = eventCardsDeck;
         this.buildingAdventureCardsDeck = buildingAdventureCardsDeck;
         this.explorationAdventureCardsDeck = explorationAdventureCardsDeck;
@@ -43,27 +37,27 @@ public class Decks {
         this.eventCardsDeck = eventCardsDeck;
     }
 
-    public LinkedList<BuildingAdventureCard> getBuildingAdventureCardsDeck() {
+    public LinkedList<AdventureCard> getBuildingAdventureCardsDeck() {
         return buildingAdventureCardsDeck;
     }
 
-    public void setBuildingAdventureCardsDeck(LinkedList<BuildingAdventureCard> buildingAdventureCardsDeck) {
+    public void setBuildingAdventureCardsDeck(LinkedList<AdventureCard> buildingAdventureCardsDeck) {
         this.buildingAdventureCardsDeck = buildingAdventureCardsDeck;
     }
 
-    public LinkedList<ExplorationAdventureCard> getExplorationAdventureCardsDeck() {
+    public LinkedList<AdventureCard> getExplorationAdventureCardsDeck() {
         return explorationAdventureCardsDeck;
     }
 
-    public void setExplorationAdventureCardsDeck(LinkedList<ExplorationAdventureCard> explorationAdventureCardsDeck) {
+    public void setExplorationAdventureCardsDeck(LinkedList<AdventureCard> explorationAdventureCardsDeck) {
         this.explorationAdventureCardsDeck = explorationAdventureCardsDeck;
     }
 
-    public LinkedList<ResourcesAdventureCard> getResourcesAdventureCardsDeck() {
+    public LinkedList<AdventureCard> getResourcesAdventureCardsDeck() {
         return resourcesAdventureCardsDeck;
     }
 
-    public void setResourcesAdventureCardsDeck(LinkedList<ResourcesAdventureCard> resourcesAdventureCardsDeck) {
+    public void setResourcesAdventureCardsDeck(LinkedList<AdventureCard> resourcesAdventureCardsDeck) {
         this.resourcesAdventureCardsDeck = resourcesAdventureCardsDeck;
     }
 

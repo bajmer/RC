@@ -4,13 +4,13 @@ public class Resources {
     private int woodAmount;
     private int foodAmount;
     private int longTermFoodAmount;
-    private int hideAmount;
+    private int furAmount;
 
     public Resources() {
         this.woodAmount = 0;
         this.foodAmount = 0;
         this.longTermFoodAmount = 0;
-        this.hideAmount = 0;
+        this.furAmount = 0;
     }
 
     public int getWoodAmount() {
@@ -37,11 +37,11 @@ public class Resources {
         this.longTermFoodAmount = longTermFoodAmount;
     }
 
-    public int getHideAmount() {
-        return hideAmount;
+    public int getFurAmount() {
+        return furAmount;
     }
 
-    public void setHideAmount(int hideAmount) {
-        this.hideAmount = hideAmount;
+    public void setFurAmount(int furAmount) {
+        this.furAmount = furAmount;
     }
 }

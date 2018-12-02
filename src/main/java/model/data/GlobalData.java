@@ -6,11 +6,7 @@ import model.character.main.MainCharacter;
 import model.decks.Decks;
 import model.elements.Dices;
 import model.elements.Marker;
-import model.elements.cards.BeastCard;
-import model.elements.cards.EventCard;
-import model.elements.cards.IdeaCard;
-import model.elements.cards.StartingItemCard;
-import model.elements.cards.mystery.MysteryCard;
+import model.elements.cards.*;
 import model.elements.tiles.IslandTile;
 import model.enums.TerrainType;
 import model.enums.elements.ResourceType;
@@ -57,11 +53,26 @@ public class GlobalData {
         this.ideas = ideas;
     }
 
-    private void reduceLivesLevelOfAllMainCharacters(int value) {
+    public void reduceLivesLevelOfAllMainCharacters(int value) {
         logger.debug("Reducing the lives level of all main characters.");
         characters.stream()
                 .filter(character -> character instanceof MainCharacter)
-                .forEach(character -> character.changeLivesLevel(value));
+                .forEach(character -> {
+                    character.changeLivesLevel(value);
+                    decreaseMoraleAfterReducingCharacterLives(value, (MainCharacter) character);
+                });
+    }
+
+    public void decreaseMoraleAfterReducingCharacterLives(int value, MainCharacter character) {
+        if (value < 0) {
+            int lives = character.getLives();
+            List<Integer> moraleDown = character.getMoraleDown();
+            for (int i = lives; i >= lives - value; i++) {
+                if (moraleDown.contains(i)) {
+                    changeMoraleLevel(-1);
+                }
+            }
+        }
     }
 
     public void changeFoodLevel(int value) {
@@ -104,16 +115,16 @@ public class GlobalData {
         }
     }
 
-    public void changeHideLevel(int value) {
-        int beginHideAmount = availableResources.getHideAmount();
-        int newHideAmount = beginHideAmount + value;
-        if (newHideAmount < 0) {
-            reduceLivesLevelOfAllMainCharacters(newHideAmount);
-            newHideAmount = 0;
+    public void changeFurLevel(int value) {
+        int beginFurAmount = availableResources.getFurAmount();
+        int newFurAmount = beginFurAmount + value;
+        if (newFurAmount < 0) {
+            reduceLivesLevelOfAllMainCharacters(newFurAmount);
+            newFurAmount = 0;
         }
-        availableResources.setHideAmount(newHideAmount);
-        if (newHideAmount != beginHideAmount) {
-            logger.info("HIDE amount has been changed to: " + newHideAmount);
+        availableResources.setFurAmount(newFurAmount);
+        if (newFurAmount != beginFurAmount) {
+            logger.info("FURS amount has been changed to: " + newFurAmount);
         }
     }
 
@@ -156,11 +167,15 @@ public class GlobalData {
         }
     }
 
-    public void changeWeaponLevel(int value) {
+    public void changeWeaponLevel(int value, Character character) {
         int beginWeaponLevel = gameParams.getWeaponLevel();
         int newWeaponLevel = beginWeaponLevel + value;
         if (newWeaponLevel < 0) {
-            reduceLivesLevelOfAllMainCharacters(newWeaponLevel);
+            if (character != null) {
+                character.changeLivesLevel(newWeaponLevel);
+            } else {
+                reduceLivesLevelOfAllMainCharacters(newWeaponLevel);
+            }
             newWeaponLevel = 0;
         }
         gameParams.setWeaponLevel(newWeaponLevel);

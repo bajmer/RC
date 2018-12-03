@@ -1,4 +1,4 @@
-package model.phase;
+package engine.phase;
 
 import model.data.GlobalData;
 import model.enums.elements.dices.DiceType;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class WeatherPhase implements Phase {
-	private final String separator = "-";
+    private static final String separator = "-";
 	private Logger logger = LogManager.getLogger(WeatherPhase.class);
 
 	@Override
@@ -37,9 +37,7 @@ public class WeatherPhase implements Phase {
 		}
 
 		List<DiceWallType> results = new ArrayList<>();
-		dices.stream().filter(diceType -> diceType != DiceType.NONE).forEach(diceType -> {
-			results.add(globalData.getDices().roll(DicesGroupType.WEATHER_DICES, diceType));
-		});
+        dices.stream().filter(diceType -> diceType != DiceType.NONE).forEach(diceType -> results.add(globalData.getDices().roll(DicesGroupType.WEATHER_DICES, diceType)));
 
 		int rainClouds = 0;
 		rainClouds += Math.toIntExact(results.stream().filter(result -> result == DiceWallType.SINGLE_RAIN).count());
@@ -66,7 +64,11 @@ public class WeatherPhase implements Phase {
 
 		if (beastAttack) {
 			logger.info("Beast attack with strength 3!");
-			// TODO: 2018-11-23 Handle beast attack
+            int beastStrength = 3;
+            int weaponLevel = globalData.getGameParams().getWeaponLevel();
+            if (weaponLevel < beastStrength) {
+                globalData.reduceLivesLevelOfAllMainCharacters(weaponLevel - beastStrength);
+            }
 		} else if (palisadeDamage) {
 			logger.info("The palisade level drops by 1!");
 			globalData.changePalisadeLevel(-1);

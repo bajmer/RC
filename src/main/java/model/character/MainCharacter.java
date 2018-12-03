@@ -1,6 +1,5 @@
-package model.character.main;
+package model.character;
 
-import model.character.Character;
 import model.elements.Marker;
 import model.enums.ProfessionType;
 import model.enums.SexType;

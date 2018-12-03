@@ -1,8 +1,8 @@
-package model.phase;
+package engine.phase;
 
-import model.character.main.MainCharacter;
+import model.cards.EventCard;
+import model.character.MainCharacter;
 import model.data.GlobalData;
-import model.elements.cards.EventCard;
 import model.elements.tiles.IslandTile;
 import model.enums.cards.event.IconType;
 import org.apache.logging.log4j.LogManager;
@@ -24,8 +24,9 @@ public class EventPhase implements Phase {
 			globalData.getAvailableTerrainTypes().add(beachTile.getTerrainType());
 			globalData.getBoard().getTilePositionIdToIslandTile().put(1, beachTile);
 			globalData.getBoard().getIslandTileToTilePosition().put(beachTile, 1);
-			globalData.handleNewIslandTileDiscovery(beachTile);
-			globalData.handleMovingShelterToNewTile(beachTile);
+            globalData.setCamp(beachTile);
+            globalData.getGameParams().setFoodProduction(1);
+            globalData.getGameParams().setWoodProduction(1);
 		}
 
 		int mainCharactersAmount = Math.toIntExact(globalData.getCharacters().stream().filter(character -> character instanceof MainCharacter).count());
@@ -40,18 +41,43 @@ public class EventPhase implements Phase {
 	@Override
 	public void runPhase(GlobalData globalData) {
 		EventCard card = globalData.getDecks().getEventCardsDeck().removeFirst();
-		logger.info("Event: " + card.getEventEffect());
-		// TODO: 2018-11-21 Handle event
+        logger.info("Event: " + card.getEvent());
+        card.handleEvent();
 
-		IconType eventIcon = card.getEventIcon();
-		logger.info("Event icon: " + eventIcon);
-		// TODO: 2018-11-21 Handle event icon
+        IconType icon = card.getIcon();
+        logger.info("Icon: " + icon);
+        handleIcon(icon, globalData);
 
 		globalData.getThreatActionCards().addFirst(card);
 		if (globalData.getThreatActionCards().size() > 2) {
 			EventCard threatCard = globalData.getThreatActionCards().removeLast();
-			logger.info("Threat effect: " + threatCard.getThreatAction());
-			// TODO: 2018-11-21 Handle threat effect
+            logger.info("Threat: " + threatCard.getThreat());
+            card.handleThreatEffect();
+        }
+    }
+
+    private void handleIcon(IconType icon, GlobalData globalData) {
+        if (icon == IconType.BOOK) {
+            int scenarioId = globalData.getScenario().getId();
+            if (scenarioId == 1) {
+                logger.info("No effects.");
+            } else if (scenarioId == 2) {
+
+            } else if (scenarioId == 3) {
+
+            } else if (scenarioId == 4) {
+
+            } else if (scenarioId == 5) {
+
+            } else if (scenarioId == 6) {
+
+            }
+        } else if (icon == IconType.BUILDING_ADVENTURE) {
+            globalData.getDecks().setTokenOnBuildingAdventureDeck(true);
+        } else if (icon == IconType.RESOURCES_ADVENTURE) {
+            globalData.getDecks().setTokenOnResourcesAdventureDeck(true);
+        } else if (icon == IconType.EXPLORATION_ADVENTURE) {
+            globalData.getDecks().setTokenOnExplorationAdventureDeck(true);
 		}
 	}
 }

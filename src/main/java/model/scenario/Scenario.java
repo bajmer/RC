@@ -1,5 +1,7 @@
 package model.scenario;
 
+import model.data.GlobalData;
+
 public class Scenario {
 
     private int id;
@@ -41,5 +43,9 @@ public class Scenario {
         if (round > allRounds) {
             // TODO: 2018-11-21 Koniec
         }
+    }
+
+    public void handleBookIcon(GlobalData globalData) {
+
     }
 }

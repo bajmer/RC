@@ -1,7 +1,9 @@
-package model.elements.cards;
+package model.cards;
 
+import model.data.GlobalData;
 import model.enums.ProfessionType;
 import model.enums.cards.IdeaType;
+import model.requirements.Requirements;
 
 public class IdeaCard implements Card {
     private IdeaType idea;
@@ -56,5 +58,15 @@ public class IdeaCard implements Card {
 
     public void setMultipleUse(boolean multipleUse) {
         this.multipleUse = multipleUse;
+    }
+
+    public Requirements specifyRequirements() {
+        Requirements requirements = new Requirements();
+
+        return requirements;
+    }
+
+    public void transformIdeaToItem(GlobalData globalData) {
+
     }
 }

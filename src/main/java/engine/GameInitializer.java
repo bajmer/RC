@@ -1,13 +1,13 @@
 package engine;
 
 import model.board.Board;
+import model.cards.*;
 import model.character.Character;
-import model.character.additional.FridayCharacter;
-import model.character.main.MainCharacter;
+import model.character.FridayCharacter;
+import model.character.MainCharacter;
 import model.data.GlobalData;
 import model.decks.Decks;
 import model.elements.Dices;
-import model.elements.cards.*;
 import model.elements.tiles.DiscoveryToken;
 import model.elements.tiles.IslandTile;
 import model.enums.*;
@@ -101,7 +101,6 @@ class GameInitializer {
 			List<String> moraleDownStringArray = new ArrayList<>(Arrays.asList(moraleDownString.split("-")));
 			List<Integer> moraleDownIntArray = new ArrayList<>();
 			moraleDownStringArray.forEach(s -> moraleDownIntArray.add(Integer.parseInt(s)));
-//            List<Integer> moraleDownIntArray = moraleDownStringArray.stream().map(Integer::parseInt).collect(Collectors.toList());
 			characters.add(new MainCharacter(
 					profession,
 					sex,
@@ -160,19 +159,19 @@ class GameInitializer {
 
 		boolean wreckageEventAdded = false;
 		for (EventCard card : allEventsDeck) {
-			if (Arrays.asList("FOOD_CRATES", "WRECKED_LIFEBOAT", "CAPTAINS_CHEST").contains(card.getEventEffect().toString())) {
+            if (Arrays.asList("FOOD_CRATES", "WRECKED_LIFEBOAT", "CAPTAINS_CHEST").contains(card.getEvent().toString())) {
 				if (!wreckageEventAdded) {
 					eventsDeck.addFirst(card);
 					wreckageEventAdded = true;
 				}
 				continue;
 			}
-			if (card.getEventIcon() == BOOK && bookIconsCounter < scenarioAllRounds / 2) {
+            if (card.getIcon() == BOOK && bookIconsCounter < scenarioAllRounds / 2) {
 				eventsDeck.add(card);
 				bookIconsCounter++;
 				continue;
 			}
-			if ((card.getEventIcon() == BUILDING_ADVENTURE || card.getEventIcon() == RESOURCES_ADVENTURE || card.getEventIcon() == EXPLORATION_ADVENTURE) &&
+            if ((card.getIcon() == BUILDING_ADVENTURE || card.getIcon() == RESOURCES_ADVENTURE || card.getIcon() == EXPLORATION_ADVENTURE) &&
 					questionMarkIconsCounter < scenarioAllRounds / 2) {
 				eventsDeck.add(card);
 				questionMarkIconsCounter++;
@@ -245,7 +244,7 @@ class GameInitializer {
 
 	private LinkedList<MysteryCard> createMysteriesDeck() {
 		LinkedList<MysteryCard> mysteriesDeck = new LinkedList<>();
-		Arrays.asList(MysteryType.values()).forEach(mysteryType -> mysteriesDeck.add(new model.elements.cards.MysteryCard(mysteryType)));
+        Arrays.asList(MysteryType.values()).forEach(mysteryType -> mysteriesDeck.add(new model.cards.MysteryCard(mysteryType)));
 		Collections.shuffle(mysteriesDeck);
 
 		logger.info("MYSTERIES DECK has been created.");
@@ -327,7 +326,4 @@ class GameInitializer {
 		logger.info("Following INITIAL IDEAS has been drawn: " + sb.toString());
 		return initialIdeas;
 	}
-
-	//createActions();
-	//createCharacterMarkers();
 }

@@ -1,9 +1,10 @@
 package engine.action;
 
+import model.cards.AdventureCard;
+import model.cards.IdeaCard;
 import model.data.GlobalData;
 import model.elements.Marker;
-import model.elements.cards.AdventureCard;
-import model.elements.cards.IdeaCard;
+import model.elements.tiles.IslandTile;
 import model.enums.ActionType;
 import model.enums.cards.IdeaType;
 import model.enums.elements.dices.DiceType;
@@ -23,12 +24,13 @@ public class BuildingAction extends Action {
 	private IdeaCard ideaCard;
 	private IdeaType ideaType;
 	private int characterNumbers = 0;
+	private IslandTile placeForShelter = null;
 
 	public BuildingAction(ActionType actionType, IdeaCard ideaCard) {
 		super(actionType);
 		this.ideaCard = ideaCard;
 		this.ideaType = ideaCard.getIdea();
-		super.setRequirements(createRequirements());
+		super.setRequirements(ideaCard.specifyRequirements());
 	}
 
 	public BuildingAction(ActionType actionType, IdeaType ideaType, int characterNumbers) {
@@ -66,91 +68,17 @@ public class BuildingAction extends Action {
 		this.characterNumbers = characterNumbers;
 	}
 
+	public IslandTile getPlaceForShelter() {
+		return placeForShelter;
+	}
+
+	public void setPlaceForShelter(IslandTile placeForShelter) {
+		this.placeForShelter = placeForShelter;
+	}
+
 	private Requirements createRequirements() {
 		Requirements requirements = new Requirements();
 		switch (ideaType) {
-			case BOW:
-				break;
-			case BRICKS:
-				break;
-			case DAM:
-				break;
-			case FIRE:
-				break;
-			case KNIFE:
-				break;
-			case MAP:
-				break;
-			case POT:
-				break;
-			case ROPE:
-				break;
-			case SHOVEL:
-				break;
-			case SNARE:
-				break;
-			case FIREPLACE:
-				break;
-			case SHORTCUT:
-				break;
-			case SPEAR:
-				break;
-			case BASKET:
-				break;
-			case BED:
-				break;
-			case BELTS:
-				break;
-			case CELLAR:
-				break;
-			case CORRAL:
-				break;
-			case CURE:
-				break;
-			case DIARY:
-				break;
-			case DRUMS:
-				break;
-			case FURNACE:
-				break;
-			case LANTERN:
-				break;
-			case MOAT:
-				break;
-			case PIT:
-				break;
-			case RAFT:
-				break;
-			case SACK:
-				break;
-			case SHIELD:
-				break;
-			case SLING:
-				break;
-			case WALL:
-				break;
-			case SCN_HATCHET:
-				break;
-			case SCN_MAST:
-				break;
-			case SCN_SACRED_BELL:
-				break;
-			case SCN_CROSS:
-				break;
-			case SCN_JENNY_RAFT:
-				break;
-			case SCN_LIFEBOAT:
-				break;
-			case SCN_BALLISTA:
-				break;
-			case SCN_CANOE:
-				break;
-			case SCN_GARDEN:
-				break;
-			case SCN_TRAP:
-				break;
-			case SCN_TRANSQUELEZER:
-				break;
 			case PARAM_SHELTER:
 				requirements.setRequiredShelter(false);
 				requirements.getRequiredResources().setWoodAmount(characterNumbers > 2 ? characterNumbers : 2);
@@ -196,11 +124,18 @@ public class BuildingAction extends Action {
 						.findFirst().get().changeDeterminationLevel(2);
 			}
 			if (results.contains(DiceWallType.ADVENTURE)) {
+				globalData.getDecks().setTokenOnBuildingAdventureDeck(false);
 				AdventureCard adventureCard = globalData.getDecks().getBuildingAdventureCardsDeck().removeFirst();
-				// TODO: 2018-11-30 handle building adventure card
+				adventureCard.handleAdventure();
 			}
 		} else {
 			handleSuccess(globalData);
+		}
+
+		if (globalData.getDecks().isTokenOnBuildingAdventureDeck()) {
+			globalData.getDecks().setTokenOnBuildingAdventureDeck(false);
+			AdventureCard adventureCard = globalData.getDecks().getBuildingAdventureCardsDeck().removeFirst();
+			adventureCard.handleAdventure();
 		}
 	}
 
@@ -228,104 +163,23 @@ public class BuildingAction extends Action {
 
 		if (ideaCard != null) {
 			globalData.getIdeas().remove(ideaCard);
+			ideaCard.transformIdeaToItem(globalData);
 			globalData.getInventions().add(ideaCard);
-		}
-
-		switch (ideaType) {
-			case BOW:
-				break;
-			case BRICKS:
-				break;
-			case DAM:
-				break;
-			case FIRE:
-				break;
-			case KNIFE:
-				break;
-			case MAP:
-				break;
-			case POT:
-				break;
-			case ROPE:
-				break;
-			case SHOVEL:
-				break;
-			case SNARE:
-				break;
-			case FIREPLACE:
-				break;
-			case SHORTCUT:
-				break;
-			case SPEAR:
-				break;
-			case BASKET:
-				break;
-			case BED:
-				break;
-			case BELTS:
-				break;
-			case CELLAR:
-				break;
-			case CORRAL:
-				break;
-			case CURE:
-				break;
-			case DIARY:
-				break;
-			case DRUMS:
-				break;
-			case FURNACE:
-				break;
-			case LANTERN:
-				break;
-			case MOAT:
-				break;
-			case PIT:
-				break;
-			case RAFT:
-				break;
-			case SACK:
-				break;
-			case SHIELD:
-				break;
-			case SLING:
-				break;
-			case WALL:
-				break;
-			case SCN_HATCHET:
-				break;
-			case SCN_MAST:
-				break;
-			case SCN_SACRED_BELL:
-				break;
-			case SCN_CROSS:
-				break;
-			case SCN_JENNY_RAFT:
-				break;
-			case SCN_LIFEBOAT:
-				break;
-			case SCN_BALLISTA:
-				break;
-			case SCN_CANOE:
-				break;
-			case SCN_GARDEN:
-				break;
-			case SCN_TRAP:
-				break;
-			case SCN_TRANSQUELEZER:
-				break;
-			case PARAM_SHELTER:
-				// TODO: 2018-11-30 budowa schronienia
-				break;
-			case PARAM_ROOF:
-				globalData.changeRoofLevel(1);
-				break;
-			case PARAM_PALISADE:
-				globalData.changePalisadeLevel(1);
-				break;
-			case PARAM_WEAPON:
-				globalData.changeWeaponLevel(1, null);
-				break;
+		} else {
+			switch (ideaType) {
+				case PARAM_SHELTER:
+					// TODO: 2018-11-30 build shelter
+					break;
+				case PARAM_ROOF:
+					globalData.changeRoofLevel(1);
+					break;
+				case PARAM_PALISADE:
+					globalData.changePalisadeLevel(1);
+					break;
+				case PARAM_WEAPON:
+					globalData.changeWeaponLevel(1, null);
+					break;
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package model.elements.cards;
+package model.cards;
 
 import model.enums.cards.AdventureType;
 import model.enums.cards.event.EventType;

@@ -1,10 +1,11 @@
-package model.phase;
+package engine.phase;
 
 import engine.RequirementsValidator;
 import engine.action.*;
-import model.character.main.MainCharacter;
+import model.character.MainCharacter;
 import model.data.GlobalData;
 import model.elements.Marker;
+import model.elements.tiles.IslandTile;
 import model.enums.ActionType;
 import model.enums.cards.IdeaType;
 import model.enums.elements.ResourceType;
@@ -57,6 +58,13 @@ public class ActionPhase implements Phase {
         while (!ready) {
             updateActionsAvailability(globalData);
             Action chosenAction = chooseAction();
+            if (chosenAction instanceof BuildingAction) {
+                BuildingAction buildingAction = (BuildingAction) chosenAction;
+                if (buildingAction.getIdeaType() == IdeaType.PARAM_SHELTER) {
+                    IslandTile islandTile = choosePlaceForShelter(globalData);
+                    buildingAction.setPlaceForShelter(islandTile);
+                }
+            }
             int minMarkersNumber = calculateMinMarkersNumber(chosenAction, globalData);
             List<Marker> chosenMarkers = chooseMarkers(chosenAction, minMarkersNumber);
             chosenAction.setAssignedMarkers(chosenMarkers);
@@ -86,6 +94,12 @@ public class ActionPhase implements Phase {
         return possibleActions.get(0); // TODO: 2018-11-28
     }
 
+    private IslandTile choosePlaceForShelter(GlobalData globalData) {
+        IslandTile islandTile = globalData.getBoard().getTilePositionIdToIslandTile().get(0); // TODO: 2018-12-03
+
+        return islandTile;
+    }
+
     private List<Marker> chooseMarkers(Action action, int minMarkersNumber) {
         List<Marker> possibleMarkers = allMarkers.stream()
                 .filter(marker -> action.getAcceptedMarkerTypes().contains(marker.getMarkerType()))
@@ -95,18 +109,23 @@ public class ActionPhase implements Phase {
     }
 
     private int calculateMinMarkersNumber(Action action, GlobalData globalData) {
-        int number = 0;
+        int number = 1;
         if (action instanceof ThreatAction) {
             number = 1;
         } else if (action instanceof HuntingAction) {
             number = 2;
         } else if (action instanceof BuildingAction) {
-            number = 1;
+            BuildingAction buildingAction = (BuildingAction) action;
+            if (buildingAction.getIdeaType() == IdeaType.PARAM_SHELTER) {
+
+            } else {
+                number = 1;
+            }
         } else if (action instanceof ResourcesAction) {
             ResourcesAction resourcesAction = (ResourcesAction) action;
             number = globalData.getBoard().getDistancesBetweenTilesPositions().get(new ArrayList<>(Arrays.asList(
                     globalData.getBoard().getIslandTileToTilePosition().get(globalData.getCamp()),
-                    resourcesAction.getPositionOnBoard()
+                    globalData.getBoard().getIslandTileToTilePosition().get(resourcesAction.getIslandTile())
             )));
         } else if (action instanceof ExplorationAction) {
             ExplorationAction explorationAction = (ExplorationAction) action;
@@ -175,11 +194,17 @@ public class ActionPhase implements Phase {
 
         int charactersNumber = Math.toIntExact(globalData.getCharacters().stream().filter(character -> character instanceof MainCharacter).count());
         Arrays.stream(IdeaType.values())
-                .filter(ideaType -> Arrays.asList(IdeaType.PARAM_ROOF, IdeaType.PARAM_PALISADE, IdeaType.PARAM_WEAPON).contains(ideaType))
-                .forEach(ideaType -> buildingActions.add(new BuildingAction(ActionType.BUILDING_ACTION, ideaType, charactersNumber)));
-        if (!globalData.isShelter()) {
-            buildingActions.add(new BuildingAction(ActionType.BUILDING_ACTION, IdeaType.PARAM_SHELTER, charactersNumber));
-        }
+                .filter(ideaType -> ideaType.toString().startsWith("PARAM_"))
+                .forEach(ideaType -> {
+                    if (ideaType == IdeaType.PARAM_SHELTER) {
+                        if (!globalData.isShelter()) {
+                            buildingActions.add(new BuildingAction(ActionType.BUILDING_ACTION, ideaType, charactersNumber));
+                        }
+                    } else {
+                        buildingActions.add(new BuildingAction(ActionType.BUILDING_ACTION, ideaType, charactersNumber));
+                    }
+                });
+
         return buildingActions;
     }
 
@@ -190,10 +215,10 @@ public class ActionPhase implements Phase {
                 ResourceType leftResource = islandTile.getLeftSquareResource();
                 ResourceType rightResource = islandTile.getRightSquareResource();
                 if (leftResource != ResourceType.ANIMAL) {
-                    resourcesActions.add(new ResourcesAction(ActionType.RESOURCES_ACTION, leftResource, position));
+                    resourcesActions.add(new ResourcesAction(ActionType.RESOURCES_ACTION, leftResource, islandTile));
                 }
                 if (rightResource != ResourceType.ANIMAL) {
-                    resourcesActions.add(new ResourcesAction(ActionType.RESOURCES_ACTION, rightResource, position));
+                    resourcesActions.add(new ResourcesAction(ActionType.RESOURCES_ACTION, rightResource, islandTile));
                 }
             }
         });

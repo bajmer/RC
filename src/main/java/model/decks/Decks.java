@@ -1,6 +1,6 @@
 package model.decks;
 
-import model.elements.cards.*;
+import model.cards.*;
 import model.elements.tiles.DiscoveryToken;
 import model.elements.tiles.IslandTile;
 
@@ -16,6 +16,9 @@ public class Decks {
     private LinkedList<DiscoveryToken> discoveryTokensStack;
     private LinkedList<IslandTile> islandTilesStack;
     private LinkedList<IdeaCard> ideaCardsDeck;
+    private boolean tokenOnBuildingAdventureDeck;
+    private boolean tokenOnExplorationAdventureDeck;
+    private boolean tokenOnResourcesAdventureDeck;
 
     public Decks(LinkedList<EventCard> eventCardsDeck, LinkedList<AdventureCard> buildingAdventureCardsDeck, LinkedList<AdventureCard> explorationAdventureCardsDeck, LinkedList<AdventureCard> resourcesAdventureCardsDeck, LinkedList<BeastCard> beastCardsDeck, LinkedList<MysteryCard> mysteryCardsDeck, LinkedList<DiscoveryToken> discoveryTokensStack, LinkedList<IslandTile> islandTilesStack, LinkedList<IdeaCard> ideaCardsDeck) {
         this.eventCardsDeck = eventCardsDeck;
@@ -27,6 +30,9 @@ public class Decks {
         this.discoveryTokensStack = discoveryTokensStack;
         this.islandTilesStack = islandTilesStack;
         this.ideaCardsDeck = ideaCardsDeck;
+        this.tokenOnBuildingAdventureDeck = false;
+        this.tokenOnExplorationAdventureDeck = false;
+        this.tokenOnResourcesAdventureDeck = false;
     }
 
     public LinkedList<EventCard> getEventCardsDeck() {
@@ -99,5 +105,29 @@ public class Decks {
 
     public void setIdeaCardsDeck(LinkedList<IdeaCard> ideaCardsDeck) {
         this.ideaCardsDeck = ideaCardsDeck;
+    }
+
+    public boolean isTokenOnBuildingAdventureDeck() {
+        return tokenOnBuildingAdventureDeck;
+    }
+
+    public void setTokenOnBuildingAdventureDeck(boolean tokenOnBuildingAdventureDeck) {
+        this.tokenOnBuildingAdventureDeck = tokenOnBuildingAdventureDeck;
+    }
+
+    public boolean isTokenOnExplorationAdventureDeck() {
+        return tokenOnExplorationAdventureDeck;
+    }
+
+    public void setTokenOnExplorationAdventureDeck(boolean tokenOnExplorationAdventureDeck) {
+        this.tokenOnExplorationAdventureDeck = tokenOnExplorationAdventureDeck;
+    }
+
+    public boolean isTokenOnResourcesAdventureDeck() {
+        return tokenOnResourcesAdventureDeck;
+    }
+
+    public void setTokenOnResourcesAdventureDeck(boolean tokenOnResourcesAdventureDeck) {
+        this.tokenOnResourcesAdventureDeck = tokenOnResourcesAdventureDeck;
     }
 }

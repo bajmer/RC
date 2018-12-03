@@ -1,23 +1,20 @@
 package model.data;
 
 import model.board.Board;
+import model.cards.*;
 import model.character.Character;
-import model.character.main.MainCharacter;
+import model.character.MainCharacter;
 import model.decks.Decks;
 import model.elements.Dices;
 import model.elements.Marker;
-import model.elements.cards.*;
 import model.elements.tiles.IslandTile;
 import model.enums.TerrainType;
-import model.enums.elements.ResourceType;
 import model.resources.Resources;
 import model.scenario.Scenario;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class GlobalData {
     private Logger logger = LogManager.getLogger(GlobalData.class);
@@ -32,7 +29,7 @@ public class GlobalData {
     private List<IdeaCard> inventions = new ArrayList<>();
     private List<MysteryCard> treasures = new ArrayList<>();
     private List<IslandTile> discoveredIslandTiles = new ArrayList<>();
-    private List<TerrainType> availableTerrainTypes = new ArrayList<>();
+    private Set<TerrainType> availableTerrainTypes = new HashSet<>();
     private LinkedList<EventCard> threatActionCards = new LinkedList<>();
     private LinkedList<BeastCard> availableBeastCards = new LinkedList<>();
     private Resources availableResources = new Resources();
@@ -67,7 +64,7 @@ public class GlobalData {
         if (value < 0) {
             int lives = character.getLives();
             List<Integer> moraleDown = character.getMoraleDown();
-            for (int i = lives; i >= lives - value; i++) {
+            for (int i = lives; i <= lives - value; i++) {
                 if (moraleDown.contains(i)) {
                     changeMoraleLevel(-1);
                 }
@@ -184,36 +181,36 @@ public class GlobalData {
         }
     }
 
-    public void handleNewIslandTileDiscovery(IslandTile islandTile) {
-        // TODO: 2018-11-22 Handle terrain type
-
-        // TODO: 2018-11-22 Handle resources
-
-        // TODO: 2018-11-22 Handle totems
-
-        // TODO: 2018-11-22 Handle discovery tokens
-
-    }
-
-    public void handleMovingShelterToNewTile(IslandTile targetIslandTile) {
-        // TODO: 2018-11-22 Setting wood and food production
-        List<ResourceType> resources = new ArrayList<>();
-        resources.add(targetIslandTile.getLeftSquareResource());
-        resources.add(targetIslandTile.getRightSquareResource());
-        int newFoodProduction = Math.toIntExact(resources.stream().filter(resourceType -> resourceType == ResourceType.FOOD).count());
-        int newWoodProduction = Math.toIntExact(resources.stream().filter(resourceType -> resourceType == ResourceType.WOOD).count());
-        gameParams.setFoodProduction(newFoodProduction);
-        gameParams.setWoodProduction(newWoodProduction);
-        // TODO: 2018-11-22 Checking production modifications, etc.
-
-        // TODO: 2018-11-22 Handle natural shelter or not
-
-        // TODO: 2018-11-22 Handle moving tokens
-
-        // TODO: 2018-11-22 Handle moving built shelter, roof, etc.
-
-        camp = targetIslandTile;
-    }
+//    public void handleNewIslandTileDiscovery(IslandTile islandTile) {
+//        // TODO: 2018-11-22 Handle terrain type
+//
+//        // TODO: 2018-11-22 Handle resources
+//
+//        // TODO: 2018-11-22 Handle totems
+//
+//        // TODO: 2018-11-22 Handle discovery tokens
+//
+//    }
+//
+//    public void handleMovingShelterToNewTile(IslandTile targetIslandTile) {
+//        // TODO: 2018-11-22 Setting wood and food production
+//        List<ResourceType> resources = new ArrayList<>();
+//        resources.add(targetIslandTile.getLeftSquareResource());
+//        resources.add(targetIslandTile.getRightSquareResource());
+//        int newFoodProduction = Math.toIntExact(resources.stream().filter(resourceType -> resourceType == ResourceType.FOOD).count());
+//        int newWoodProduction = Math.toIntExact(resources.stream().filter(resourceType -> resourceType == ResourceType.WOOD).count());
+//        gameParams.setFoodProduction(newFoodProduction);
+//        gameParams.setWoodProduction(newWoodProduction);
+//        // TODO: 2018-11-22 Checking production modifications, etc.
+//
+//        // TODO: 2018-11-22 Handle natural shelter or not
+//
+//        // TODO: 2018-11-22 Handle moving tokens
+//
+//        // TODO: 2018-11-22 Handle moving built shelter, roof, etc.
+//
+//        camp = targetIslandTile;
+//    }
 
     public Decks getDecks() {
         return decks;
@@ -295,11 +292,11 @@ public class GlobalData {
         this.discoveredIslandTiles = discoveredIslandTiles;
     }
 
-    public List<TerrainType> getAvailableTerrainTypes() {
+    public Set<TerrainType> getAvailableTerrainTypes() {
         return availableTerrainTypes;
     }
 
-    public void setAvailableTerrainTypes(List<TerrainType> availableTerrainTypes) {
+    public void setAvailableTerrainTypes(Set<TerrainType> availableTerrainTypes) {
         this.availableTerrainTypes = availableTerrainTypes;
     }
 

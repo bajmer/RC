@@ -1,4 +1,4 @@
-package model.elements.cards;
+package model.cards;
 
 import model.enums.cards.BeastType;
 

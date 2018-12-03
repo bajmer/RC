@@ -1,8 +1,9 @@
 package engine.action;
 
+import model.cards.AdventureCard;
 import model.data.GlobalData;
 import model.elements.Marker;
-import model.elements.cards.AdventureCard;
+import model.elements.tiles.IslandTile;
 import model.enums.ActionType;
 import model.enums.elements.ResourceType;
 import model.enums.elements.dices.DiceWallType;
@@ -16,12 +17,12 @@ public class ResourcesAction extends Action {
 	private Logger logger = LogManager.getLogger(ResourcesAction.class);
 
 	private ResourceType resourceType;
-	private int positionOnBoard;
+    private IslandTile islandTile;
 
-	public ResourcesAction(ActionType actionType, ResourceType resourceType, int positionOnBoard) {
+    public ResourcesAction(ActionType actionType, ResourceType resourceType, IslandTile islandTile) {
 		super(actionType);
 		this.resourceType = resourceType;
-		this.positionOnBoard = positionOnBoard;
+        this.islandTile = islandTile;
 	}
 
 	public ResourceType getResourceType() {
@@ -32,12 +33,12 @@ public class ResourcesAction extends Action {
 		this.resourceType = resourceType;
 	}
 
-	public int getPositionOnBoard() {
-		return positionOnBoard;
-	}
+    public IslandTile getIslandTile() {
+        return islandTile;
+    }
 
-	public void setPositionOnBoard(int positionOnBoard) {
-		this.positionOnBoard = positionOnBoard;
+    public void setIslandTile(IslandTile islandTile) {
+        this.islandTile = islandTile;
 	}
 
 	@Override
@@ -63,17 +64,22 @@ public class ResourcesAction extends Action {
 						.findFirst().get().changeDeterminationLevel(2);
 			}
 			if (results.contains(DiceWallType.ADVENTURE)) {
+                globalData.getDecks().setTokenOnResourcesAdventureDeck(false);
 				AdventureCard adventureCard = globalData.getDecks().getResourcesAdventureCardsDeck().removeFirst();
-				// TODO: 2018-11-30 handle resource adventure card
+                adventureCard.handleAdventure();
 			}
 		} else {
 			handleSuccess(globalData);
 		}
-
+        if (globalData.getDecks().isTokenOnResourcesAdventureDeck()) {
+            globalData.getDecks().setTokenOnResourcesAdventureDeck(false);
+            AdventureCard adventureCard = globalData.getDecks().getResourcesAdventureCardsDeck().removeFirst();
+            adventureCard.handleAdventure();
+        }
 	}
 
 	private void handleSuccess(GlobalData globalData) {
-		int amount = 1; // TODO: 2018-11-30 Can be modyfied
+        int amount = 1; // TODO: 2018-11-30 Can be modified
 		if (resourceType == ResourceType.FOOD) {
 			globalData.getFutureResources().setFoodAmount(globalData.getFutureResources().getFoodAmount() + amount);
 		} else if (resourceType == ResourceType.WOOD) {

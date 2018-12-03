@@ -1,6 +1,4 @@
-package engine.handler;
-
-import model.phase.*;
+package engine.phase;
 
 import java.util.ArrayList;
 import java.util.Arrays;

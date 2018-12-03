@@ -1,6 +1,6 @@
 package engine.action;
 
-import model.character.main.MainCharacter;
+import model.character.MainCharacter;
 import model.data.GlobalData;
 import model.enums.ActionType;
 import org.apache.logging.log4j.LogManager;

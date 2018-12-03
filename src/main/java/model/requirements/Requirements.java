@@ -1,29 +1,31 @@
 package model.requirements;
 
+import model.cards.IdeaCard;
 import model.data.GameParams;
-import model.elements.cards.IdeaCard;
 import model.enums.TerrainType;
 import model.resources.Resources;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Requirements {
-    private List<TerrainType> requiredTerrains;
+    private Set<TerrainType> requiredTerrains;
     private List<IdeaCard> requiredItems;
     private Resources requiredResources;
     private GameParams requiredGameParams;
     private boolean requiredShelter;
 
     public Requirements() {
-        this.requiredTerrains = new ArrayList<>();
+        this.requiredTerrains = new HashSet<>();
         this.requiredItems = new ArrayList<>();
         this.requiredResources = new Resources();
         this.requiredGameParams = new GameParams();
         this.requiredShelter = false;
     }
 
-    public Requirements(List<TerrainType> requiredTerrains, List<IdeaCard> requiredItems, Resources requiredResources, GameParams requiredGameParams, boolean requiredShelter) {
+    public Requirements(Set<TerrainType> requiredTerrains, List<IdeaCard> requiredItems, Resources requiredResources, GameParams requiredGameParams, boolean requiredShelter) {
         this.requiredTerrains = requiredTerrains;
         this.requiredItems = requiredItems;
         this.requiredResources = requiredResources;
@@ -31,11 +33,11 @@ public class Requirements {
         this.requiredShelter = requiredShelter;
     }
 
-    public List<TerrainType> getRequiredTerrains() {
+    public Set<TerrainType> getRequiredTerrains() {
         return requiredTerrains;
     }
 
-    public void setRequiredTerrains(List<TerrainType> requiredTerrains) {
+    public void setRequiredTerrains(Set<TerrainType> requiredTerrains) {
         this.requiredTerrains = requiredTerrains;
     }
 

@@ -1,9 +1,9 @@
 package engine.action;
 
+import model.cards.BeastCard;
 import model.character.Character;
 import model.data.GlobalData;
 import model.elements.Marker;
-import model.elements.cards.BeastCard;
 import model.enums.ActionType;
 import model.enums.cards.BeastType;
 import org.apache.logging.log4j.LogManager;

@@ -1,6 +1,6 @@
-package model.phase;
+package engine.phase;
 
-import model.character.main.MainCharacter;
+import model.character.MainCharacter;
 import model.data.GlobalData;
 import model.elements.tiles.IslandTile;
 import org.apache.logging.log4j.LogManager;

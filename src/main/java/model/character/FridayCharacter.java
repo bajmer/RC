@@ -1,6 +1,5 @@
-package model.character.additional;
+package model.character;
 
-import model.character.Character;
 import model.elements.Marker;
 import model.enums.elements.MarkerType;
 import org.apache.logging.log4j.LogManager;

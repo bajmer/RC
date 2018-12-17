@@ -7,13 +7,12 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import model.enums.ProfessionType;
 import model.enums.SexType;
-import model.options.ChoosedCharacter;
+import model.options.ChosenCharacter;
 import model.options.Options;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
-public class WindowOptionsController {
+public class OptionsWindowController {
 
     @FXML
     Pane rootPane;
@@ -27,11 +26,11 @@ public class WindowOptionsController {
         //MOCK
         Options gameOptions = new Options(
                 1,
-                new ArrayList<>(Arrays.asList(
-                        new ChoosedCharacter(ProfessionType.CARPENTER, SexType.MAN),
-                        new ChoosedCharacter(ProfessionType.EXPLORER, SexType.WOMAN),
-                        new ChoosedCharacter(ProfessionType.SOLDIER, SexType.MAN),
-                        new ChoosedCharacter(ProfessionType.COOK, SexType.WOMAN))),
+                Arrays.asList(
+                        new ChosenCharacter(ProfessionType.CARPENTER, SexType.MAN),
+                        new ChosenCharacter(ProfessionType.EXPLORER, SexType.WOMAN),
+                        new ChosenCharacter(ProfessionType.SOLDIER, SexType.MAN),
+                        new ChosenCharacter(ProfessionType.COOK, SexType.WOMAN)),
                 true,
                 true,
                 2);

@@ -3,12 +3,12 @@ package model.options;
 import model.enums.ProfessionType;
 import model.enums.SexType;
 
-public class ChoosedCharacter {
+public class ChosenCharacter {
 
     private ProfessionType profession;
     private SexType sex;
 
-    public ChoosedCharacter(ProfessionType profession, SexType sex) {
+    public ChosenCharacter(ProfessionType profession, SexType sex) {
         this.profession = profession;
         this.sex = sex;
     }

@@ -1,10 +1,14 @@
 package engine.phase;
 
+import engine.MethodRepository;
+import model.cards.AdventureCard;
+import model.cards.Card;
 import model.cards.EventCard;
 import model.character.MainCharacter;
 import model.data.GlobalData;
-import model.elements.tiles.IslandTile;
+import model.enums.ActionType;
 import model.enums.cards.event.IconType;
+import model.enums.elements.TokenType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,72 +16,85 @@ public class EventPhase implements Phase {
 	private Logger logger = LogManager.getLogger(EventPhase.class);
 
 	@Override
-	public void initializePhase(GlobalData globalData) {
-		globalData.getScenario().nextRound();
-		int roundNumber = globalData.getScenario().getRound();
+    public void initializePhase() {
+        MethodRepository.nextRound();
+        int roundNumber = GlobalData.getScenario().getRound();
 		logger.info("***********************************************************");
 		logger.info("Round number: " + roundNumber);
 
 		if (roundNumber == 1) {
-			IslandTile beachTile = globalData.getDecks().getIslandTilesStack().removeFirst();
-			globalData.getDiscoveredIslandTiles().add(beachTile);
-			globalData.getAvailableTerrainTypes().add(beachTile.getTerrainType());
-			globalData.getBoard().getTilePositionIdToIslandTile().put(1, beachTile);
-			globalData.getBoard().getIslandTileToTilePosition().put(beachTile, 1);
-            globalData.setCamp(beachTile);
-            globalData.getGameParams().setFoodProduction(1);
-            globalData.getGameParams().setWoodProduction(1);
+            MethodRepository.handleDiscoveryOfNewIslandTile(1);
+            GlobalData.setCamp(GlobalData.getBoard().getTilePositionIdToIslandTile().get(1));
 		}
 
-		int mainCharactersAmount = Math.toIntExact(globalData.getCharacters().stream().filter(character -> character instanceof MainCharacter).count());
-		int firstPlayerId = (globalData.getScenario().getRound() - 1) % mainCharactersAmount;
+        MethodRepository.nextFirstPlayer();
 
-		globalData.setFirstPlayer((MainCharacter) globalData.getCharacters().get(firstPlayerId));
-		logger.debug("First player: " + globalData.getFirstPlayer().getProfession());
+        GlobalData.getCharacters().stream()
+                .filter(character -> character instanceof MainCharacter)
+                .map(character -> (MainCharacter) character)
+                .forEach(mainCharacter -> mainCharacter.setUseOfSpecialSkills(true));
 
 		logger.info("---> Phase: EVENT");
 	}
 
 	@Override
-	public void runPhase(GlobalData globalData) {
-		EventCard card = globalData.getDecks().getEventCardsDeck().removeFirst();
-        logger.info("Event: " + card.getEvent());
-        card.handleEvent();
+    public void runPhase() {
+        boolean waitForEvent = true;
+        while (waitForEvent) {
+            Card card = GlobalData.getDecks().getEventCardsDeck().removeFirst();
+            if (card instanceof AdventureCard) {
+                AdventureCard adventureCard = (AdventureCard) card;
+                logger.info("Event: " + adventureCard.getEvent());
+                adventureCard.handleEvent();
+            } else {
+                EventCard eventCard = (EventCard) card;
+                logger.info("Event: " + eventCard.getEvent());
+                eventCard.handleEvent();
 
-        IconType icon = card.getIcon();
-        logger.info("Icon: " + icon);
-        handleIcon(icon, globalData);
+                IconType icon = eventCard.getIcon();
+                logger.info("Icon: " + icon);
+                handleIcon(icon);
 
-		globalData.getThreatActionCards().addFirst(card);
-		if (globalData.getThreatActionCards().size() > 2) {
-			EventCard threatCard = globalData.getThreatActionCards().removeLast();
-            logger.info("Threat: " + threatCard.getThreat());
-            card.handleThreatEffect();
+                GlobalData.getThreatActionCards().addFirst(eventCard);
+                if (GlobalData.getThreatActionCards().size() > 2) {
+                    EventCard threatCard = GlobalData.getThreatActionCards().removeLast();
+                    logger.info("Threat: " + threatCard.getThreat());
+                    eventCard.handleThreatEvent();
+                }
+                waitForEvent = false;
+            }
         }
     }
 
-    private void handleIcon(IconType icon, GlobalData globalData) {
+    private void handleIcon(IconType icon) {
         if (icon == IconType.BOOK) {
-            int scenarioId = globalData.getScenario().getId();
-            if (scenarioId == 1) {
-                logger.info("No effects.");
-            } else if (scenarioId == 2) {
-
-            } else if (scenarioId == 3) {
-
-            } else if (scenarioId == 4) {
-
-            } else if (scenarioId == 5) {
-
-            } else if (scenarioId == 6) {
-
+            int scenarioId = model.data.GlobalData.getScenario().getId();
+            switch (scenarioId) {
+                case 1:
+                    logger.info("Icon effect: No effect");
+                    break;
+                case 2:
+                    logger.info("Icon effect: Mysterious fog");
+                    break;
+                case 3:
+                    logger.info("Icon effect: Storm");
+                    break;
+                case 4:
+                    logger.info("Icon effect: Dust eruption");
+                    break;
+                case 5:
+                    logger.info("Icon effect: Cannibal attack");
+                    break;
+                case 6:
+                    logger.info("Icon effect: Poor yield");
+                    break;
             }
         } else if (icon == IconType.BUILDING_ADVENTURE) {
-            globalData.getDecks().setTokenOnBuildingAdventureDeck(true);
+            MethodRepository.putTokenOnActionField(ActionType.BUILDING_ACTION, TokenType.ADVENTURE_TOKEN);
         } else if (icon == IconType.RESOURCES_ADVENTURE) {
-            globalData.getDecks().setTokenOnResourcesAdventureDeck(true);
+            MethodRepository.putTokenOnActionField(ActionType.RESOURCES_ACTION, TokenType.ADVENTURE_TOKEN);
         } else if (icon == IconType.EXPLORATION_ADVENTURE) {
-            globalData.getDecks().setTokenOnExplorationAdventureDeck(true);
+            MethodRepository.putTokenOnActionField(ActionType.EXPLORATION_ACTION, TokenType.ADVENTURE_TOKEN);
 		}
 	}
 }

@@ -1,16 +1,23 @@
 package model.resources;
 
+import model.elements.tiles.DiscoveryToken;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Resources {
     private int woodAmount;
     private int foodAmount;
     private int longTermFoodAmount;
     private int furAmount;
+    private List<DiscoveryToken> discoveryTokens;
 
     public Resources() {
         this.woodAmount = 0;
         this.foodAmount = 0;
         this.longTermFoodAmount = 0;
         this.furAmount = 0;
+        this.discoveryTokens = new ArrayList<>();
     }
 
     public int getWoodAmount() {
@@ -43,5 +50,13 @@ public class Resources {
 
     public void setFurAmount(int furAmount) {
         this.furAmount = furAmount;
+    }
+
+    public List<DiscoveryToken> getDiscoveryTokens() {
+        return discoveryTokens;
+    }
+
+    public void setDiscoveryTokens(List<DiscoveryToken> discoveryTokens) {
+        this.discoveryTokens = discoveryTokens;
     }
 }

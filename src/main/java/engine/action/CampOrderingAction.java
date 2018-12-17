@@ -1,6 +1,8 @@
 package engine.action;
 
-import model.character.MainCharacter;
+import controller.GameWindowController;
+import engine.MethodRepository;
+import model.character.Character;
 import model.data.GlobalData;
 import model.enums.ActionType;
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 public class CampOrderingAction extends Action {
 
+    private static boolean blackFlag = false;
     private Logger logger = LogManager.getLogger(CampOrderingAction.class);
 
 	public CampOrderingAction(ActionType actionType) {
@@ -15,29 +18,35 @@ public class CampOrderingAction extends Action {
 		super.setMultipleAction(true);
 	}
 
+    public static boolean isBlackFlag() {
+        return blackFlag;
+    }
+
+    public static void setBlackFlag(boolean blackFlag) {
+        CampOrderingAction.blackFlag = blackFlag;
+    }
+
 	@Override
-    public void performTheAction(GlobalData globalData) {
+    public void performTheAction(Character leader) {
         StringBuilder sb = new StringBuilder();
         super.getAssignedMarkers().forEach(marker -> sb.append(marker.toString().replaceAll("_MARKER", "")).append(" "));
         logger.info("++ Action: CAMP ORDERING, Characters: " + sb.toString());
 
-        int charactersNumber = Math.toIntExact(globalData.getCharacters().stream()
-                .filter(character -> character instanceof MainCharacter)
-                .count());
+        if (blackFlag) {
+            blackFlag = false;
+            return;
+        }
 
+        int charactersNumber = GlobalData.getMainCharactersNumber();
         if (charactersNumber < 4) {
-            super.getAssignedMarkers().forEach(marker -> globalData.getCharacters().stream()
-                    .filter(character -> character.getMarkers().contains(marker))
-                    .findFirst().get().changeDeterminationLevel(2));
-            globalData.changeMoraleLevel(1);
+            MethodRepository.changeDeterminationLevel(2, leader);
+            MethodRepository.changeMoraleLevel(1);
         } else {
-            boolean determination = true; // TODO: 2018-11-29 Choose determination or morale
-            if (determination) {
-                super.getAssignedMarkers().forEach(marker -> globalData.getCharacters().stream()
-                        .filter(character -> character.getMarkers().contains(marker))
-                        .findFirst().get().changeDeterminationLevel(2));
-            } else {
-                globalData.changeMoraleLevel(1);
+            String choice = GameWindowController.chooseDeterminationOrMorale();
+            if (choice.equals("DETERMINATION")) {
+                MethodRepository.changeDeterminationLevel(2, leader);
+            } else if (choice.equals("MORALE")) {
+                MethodRepository.changeMoraleLevel(1);
             }
         }
 	}

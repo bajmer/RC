@@ -1,4 +1,4 @@
-package utils;
+package engine.utils;
 
 import model.enums.ProfessionType;
 import model.enums.SpecialSkillType;

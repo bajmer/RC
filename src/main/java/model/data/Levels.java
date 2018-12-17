@@ -1,20 +1,16 @@
 package model.data;
 
-public class GameParams {
+public class Levels {
     private int moraleLevel;
     private int roofLevel;
     private int palisadeLevel;
     private int weaponLevel;
-    private int foodProduction;
-    private int woodProduction;
 
-    public GameParams() {
+    public Levels() {
         this.moraleLevel = 0;
         this.roofLevel = 0;
         this.palisadeLevel = 0;
         this.weaponLevel = 0;
-        this.foodProduction = 0;
-        this.woodProduction = 0;
     }
 
     public int getMoraleLevel() {
@@ -47,21 +43,5 @@ public class GameParams {
 
     public void setWeaponLevel(int weaponLevel) {
         this.weaponLevel = weaponLevel;
-    }
-
-    public int getFoodProduction() {
-        return foodProduction;
-    }
-
-    public void setFoodProduction(int foodProduction) {
-        this.foodProduction = foodProduction;
-    }
-
-    public int getWoodProduction() {
-        return woodProduction;
-    }
-
-    public void setWoodProduction(int woodProduction) {
-        this.woodProduction = woodProduction;
     }
 }

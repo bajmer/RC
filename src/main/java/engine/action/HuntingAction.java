@@ -1,26 +1,39 @@
 package engine.action;
 
+import engine.MethodRepository;
 import model.cards.BeastCard;
 import model.character.Character;
 import model.data.GlobalData;
-import model.elements.Marker;
 import model.enums.ActionType;
 import model.enums.cards.BeastType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class HuntingAction extends Action {
+    private static boolean beastStrengthPlusOne;
     private Logger logger = LogManager.getLogger(HuntingAction.class);
 
     public HuntingAction(ActionType actionType) {
         super(actionType);
     }
 
+    public static boolean isBeastStrengthPlusOne() {
+        return beastStrengthPlusOne;
+    }
+
+    public static void setBeastStrengthPlusOne(boolean beastStrengthPlusOne) {
+        HuntingAction.beastStrengthPlusOne = beastStrengthPlusOne;
+    }
+
     @Override
-    public void performTheAction(GlobalData globalData) {
-        BeastCard beastCard = globalData.getAvailableBeastCards().removeFirst();
+    public void performTheAction(Character leader) {
+        BeastCard beastCard = GlobalData.getAvailableBeastCards().removeFirst();
         BeastType beastType = beastCard.getBeast();
         int strength = beastCard.getStrength();
+        if (beastStrengthPlusOne) {
+            strength += 1;
+            beastStrengthPlusOne = false;
+        }
         int weaponDamage = beastCard.getWeaponLevelDecrease();
         int food = beastCard.getFoodAmount();
         int furs = beastCard.getFurAmount();
@@ -30,16 +43,12 @@ public class HuntingAction extends Action {
         logger.info("++ Action: HUNTING, Characters: " + sb.toString() + ", Beast: " + beastType.toString() + ", Strength: " + strength
                 + ", Weapon damage: " + weaponDamage + ", Food: " + food + ", Furs: " + furs);
 
-        Marker leaderMarker = super.getAssignedMarkers().get(0);
-        Character leader = globalData.getCharacters().stream()
-                .filter(character -> character.getMarkers().contains(leaderMarker))
-                .findFirst().get();
-        int weaponLevel = globalData.getGameParams().getWeaponLevel();
+        int weaponLevel = GlobalData.getLevels().getWeaponLevel();
         if (weaponLevel < strength) {
-            leader.changeLivesLevel(weaponLevel - strength);
+            MethodRepository.changeLivesLevel(weaponLevel - strength, leader);
         }
-        globalData.changeWeaponLevel(weaponDamage, leader);
-        globalData.getFutureResources().setFoodAmount(globalData.getFutureResources().getFoodAmount() + food);
-        globalData.getFutureResources().setFurAmount(globalData.getFutureResources().getFurAmount() + furs);
+        MethodRepository.changeWeaponLevel(weaponDamage, leader);
+        GlobalData.getFutureResources().setFoodAmount(GlobalData.getFutureResources().getFoodAmount() + food);
+        GlobalData.getFutureResources().setFurAmount(GlobalData.getFutureResources().getFurAmount() + furs);
     }
 }

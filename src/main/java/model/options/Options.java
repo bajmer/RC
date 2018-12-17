@@ -5,12 +5,12 @@ import java.util.List;
 public class Options {
 
     private int scenarioNumber;
-    private List<ChoosedCharacter> characters;
+    private List<ChosenCharacter> characters;
     private boolean activeFriday;
     private boolean activeDog;
     private int startingItemsNumber;
 
-    public Options(int scenarioNumber, List<ChoosedCharacter> characters, boolean activeFriday, boolean activeDog, int startingItemsNumber) {
+    public Options(int scenarioNumber, List<ChosenCharacter> characters, boolean activeFriday, boolean activeDog, int startingItemsNumber) {
         this.scenarioNumber = scenarioNumber;
         this.characters = characters;
         this.activeFriday = activeFriday;
@@ -22,7 +22,7 @@ public class Options {
         return scenarioNumber;
     }
 
-    public List<ChoosedCharacter> getCharacters() {
+    public List<ChosenCharacter> getCharacters() {
         return characters;
     }
 

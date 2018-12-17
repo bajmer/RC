@@ -5,35 +5,26 @@ import model.enums.ProfessionType;
 import model.enums.SexType;
 import model.enums.SpecialSkillType;
 import model.enums.elements.MarkerType;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainCharacter implements Character {
-    private Logger logger = LogManager.getLogger(MainCharacter.class);
-
+public class MainCharacter extends Character {
     private ProfessionType profession;
     private SexType sex;
     private List<SpecialSkillType> specialSkills;
     private List<Integer> moraleDown;
-    private int lives;
-    private int beginLives;
-    private int determination;
-    private List<Marker> markers = new ArrayList<>();
+    private boolean useOfSpecialSkills;
 
     public MainCharacter(ProfessionType profession, SexType sex, List<SpecialSkillType> specialSkills, List<Integer> moraleDown, int lives) {
+        super(lives);
+        for (int i = 0; i < 2; i++) {
+            super.getMarkers().add(new Marker(MarkerType.valueOf(profession.toString() + "_MARKER")));
+        }
         this.profession = profession;
         this.sex = sex;
         this.specialSkills = specialSkills;
         this.moraleDown = moraleDown;
-        this.lives = lives;
-        this.beginLives = lives;
-        this.determination = 0;
-        for (int i = 0; i < 2; i++) {
-            this.markers.add(new Marker(MarkerType.valueOf(profession.toString() + "_MARKER")));
-        }
+        this.useOfSpecialSkills = true;
     }
 
     public ProfessionType getProfession() {
@@ -68,60 +59,11 @@ public class MainCharacter implements Character {
         this.moraleDown = moraleDown;
     }
 
-    public int getLives() {
-        return lives;
+    public boolean canUseOfSpecialSkills() {
+        return useOfSpecialSkills;
     }
 
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    public int getDetermination() {
-        return determination;
-    }
-
-    public void setDetermination(int determination) {
-        this.determination = determination;
-    }
-
-    @Override
-    public List<Marker> getMarkers() {
-        return markers;
-    }
-
-    public void setMarkers(List<Marker> markers) {
-        this.markers = markers;
-    }
-
-    @Override
-    public void changeLivesLevel(int value) {
-//        if (value < 0) {
-//            for (int i = lives; i >= lives + value; i--) {
-//                if (moraleDown.contains(i)) {
-//                    globalData.changeMoraleLevel(-1);
-//                }
-//            }
-//        }
-        lives += value;
-        if (lives > beginLives) {
-            lives = beginLives;
-        } else if (lives <= 0) {
-            lives = 0;
-        }
-        logger.debug("The number of " + profession + " lives has been changed to: " + lives);
-
-        if (lives <= 0) {
-            // TODO: 2018-11-22 Handle signal GameOver
-        }
-    }
-
-    @Override
-    public void changeDeterminationLevel(int value) {
-        determination += value;
-        if (determination < 0) {
-            changeLivesLevel(determination);
-            determination = 0;
-        }
-        logger.debug("The number of " + profession + " determinations has been changed to: " + determination);
+    public void setUseOfSpecialSkills(boolean useOfSpecialSkills) {
+        this.useOfSpecialSkills = useOfSpecialSkills;
     }
 }

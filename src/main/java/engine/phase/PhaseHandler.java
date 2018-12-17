@@ -1,18 +1,17 @@
 package engine.phase;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class PhaseHandler {
-    private static List<Phase> phases = new ArrayList<>(Arrays.asList(
+    private static List<Phase> phases = Arrays.asList(
             new EventPhase(),
             new MoralePhase(),
             new ProductionPhase(),
             new ActionPhase(),
             new WeatherPhase(),
             new NightPhase()
-    ));
+    );
 
     private static Phase tmpPhase = null;
 

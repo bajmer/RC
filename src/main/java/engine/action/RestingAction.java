@@ -1,6 +1,7 @@
 package engine.action;
 
-import model.data.GlobalData;
+import engine.MethodRepository;
+import model.character.Character;
 import model.enums.ActionType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,12 +16,11 @@ public class RestingAction extends Action {
 	}
 
 	@Override
-    public void performTheAction(GlobalData globalData) {
+    public void performTheAction(Character leader) {
         StringBuilder sb = new StringBuilder();
         super.getAssignedMarkers().forEach(marker -> sb.append(marker.toString().replaceAll("_MARKER", "")).append(" "));
         logger.info("++ Action: REST, Characters: " + sb.toString());
-        super.getAssignedMarkers().forEach(marker -> globalData.getCharacters().stream()
-                .filter(character -> character.getMarkers().contains(marker))
-                .findFirst().get().changeLivesLevel(1));
+
+        MethodRepository.changeLivesLevel(1, leader);
 	}
 }

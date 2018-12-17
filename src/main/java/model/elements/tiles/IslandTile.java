@@ -2,24 +2,38 @@ package model.elements.tiles;
 
 import model.enums.TerrainType;
 import model.enums.elements.ResourceType;
+import model.enums.elements.TokenType;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class IslandTile {
     private int tileID;
-    private TerrainType terrainType;
-    private ResourceType leftSquareResource;
-    private ResourceType rightSquareResource;
-    private int totemsNumber;
+    private TerrainType terrain;
+    private ResourceType leftSource;
+    private ResourceType rightSource;
+    private boolean totem;
     private int discoveryTokensNumber;
     private boolean naturalShelter;
+    private Set<TokenType> tokens;
+    private boolean endOfLeftSource;
+    private boolean endOfRightSource;
+    private boolean coveredTerrain;
+    private boolean upsideDown; // TODO: 2018-12-12 reset i obsługa
 
-    public IslandTile(int tileID, TerrainType terrainType, ResourceType leftSquareResource, ResourceType rightSquareResource, int totemsNumber, int discoveryTokensNumber, boolean naturalShelter) {
+    public IslandTile(int tileID, TerrainType terrain, ResourceType leftSource, ResourceType rightSource, int discoveryTokensNumber, boolean totem, boolean naturalShelter) {
         this.tileID = tileID;
-        this.terrainType = terrainType;
-        this.leftSquareResource = leftSquareResource;
-        this.rightSquareResource = rightSquareResource;
-        this.totemsNumber = totemsNumber;
+        this.terrain = terrain;
+        this.leftSource = leftSource;
+        this.rightSource = rightSource;
         this.discoveryTokensNumber = discoveryTokensNumber;
+        this.totem = totem;
         this.naturalShelter = naturalShelter;
+        this.tokens = new HashSet<>();
+        this.endOfLeftSource = false;
+        this.endOfRightSource = false;
+        this.coveredTerrain = false;
+        this.upsideDown = false;
     }
 
     public int getTileID() {
@@ -30,36 +44,36 @@ public class IslandTile {
         this.tileID = tileID;
     }
 
-    public TerrainType getTerrainType() {
-        return terrainType;
+    public TerrainType getTerrain() {
+        return terrain;
     }
 
-    public void setTerrainType(TerrainType terrainType) {
-        this.terrainType = terrainType;
+    public void setTerrain(TerrainType terrain) {
+        this.terrain = terrain;
     }
 
-    public ResourceType getLeftSquareResource() {
-        return leftSquareResource;
+    public ResourceType getLeftSource() {
+        return leftSource;
     }
 
-    public void setLeftSquareResource(ResourceType leftSquareResource) {
-        this.leftSquareResource = leftSquareResource;
+    public void setLeftSource(ResourceType leftSource) {
+        this.leftSource = leftSource;
     }
 
-    public ResourceType getRightSquareResource() {
-        return rightSquareResource;
+    public ResourceType getRightSource() {
+        return rightSource;
     }
 
-    public void setRightSquareResource(ResourceType rightSquareResource) {
-        this.rightSquareResource = rightSquareResource;
+    public void setRightSource(ResourceType rightSource) {
+        this.rightSource = rightSource;
     }
 
-    public int getTotemsNumber() {
-        return totemsNumber;
+    public boolean isTotem() {
+        return totem;
     }
 
-    public void setTotemsNumber(int totemsNumber) {
-        this.totemsNumber = totemsNumber;
+    public void setTotem(boolean totem) {
+        this.totem = totem;
     }
 
     public int getDiscoveryTokensNumber() {
@@ -76,5 +90,45 @@ public class IslandTile {
 
     public void setNaturalShelter(boolean naturalShelter) {
         this.naturalShelter = naturalShelter;
+    }
+
+    public Set<TokenType> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(Set<TokenType> tokens) {
+        this.tokens = tokens;
+    }
+
+    public boolean isEndOfLeftSource() {
+        return endOfLeftSource;
+    }
+
+    public void setEndOfLeftSource(boolean endOfLeftSource) {
+        this.endOfLeftSource = endOfLeftSource;
+    }
+
+    public boolean isEndOfRightSource() {
+        return endOfRightSource;
+    }
+
+    public void setEndOfRightSource(boolean endOfRightSource) {
+        this.endOfRightSource = endOfRightSource;
+    }
+
+    public boolean isCoveredTerrain() {
+        return coveredTerrain;
+    }
+
+    public void setCoveredTerrain(boolean coveredTerrain) {
+        this.coveredTerrain = coveredTerrain;
+    }
+
+    public boolean isUpsideDown() {
+        return upsideDown;
+    }
+
+    public void setUpsideDown(boolean upsideDown) {
+        this.upsideDown = upsideDown;
     }
 }

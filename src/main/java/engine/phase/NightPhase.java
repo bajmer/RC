@@ -1,5 +1,6 @@
 package engine.phase;
 
+import engine.MethodRepository;
 import model.character.MainCharacter;
 import model.data.GlobalData;
 import model.elements.tiles.IslandTile;
@@ -11,51 +12,63 @@ import java.util.Arrays;
 import java.util.List;
 
 import static model.enums.cards.IdeaType.CELLAR;
-import static model.enums.cards.MysteryType.TREAS_BARREL;
-import static model.enums.cards.MysteryType.TREAS_BOXES;
+import static model.enums.cards.MysteryType.TREAS_BECZKA;
+import static model.enums.cards.MysteryType.TREAS_SKRZYNIE;
 
 public class NightPhase implements Phase {
+    private static boolean everyoneNeedAdditionalFood = false;
     private Logger logger = LogManager.getLogger(NightPhase.class);
 
+    public static boolean isEveryoneNeedAdditionalFood() {
+        return everyoneNeedAdditionalFood;
+    }
+
+    public static void setEveryoneNeedAdditionalFood(boolean everyoneNeedAdditionalFood) {
+        NightPhase.everyoneNeedAdditionalFood = everyoneNeedAdditionalFood;
+    }
+
     @Override
-    public void initializePhase(GlobalData globalData) {
+    public void initializePhase() {
         logger.info("---> Phase: NIGHT");
     }
 
     @Override
-    public void runPhase(GlobalData globalData) {
-        int requiredFood = Math.toIntExact(globalData.getCharacters().stream().filter(character -> character instanceof MainCharacter).count());
-        int foodAmount = globalData.getAvailableResources().getFoodAmount();
-        int ltFoodAmount = globalData.getAvailableResources().getLongTermFoodAmount();
+    public void runPhase() {
+        int requiredFood = GlobalData.getMainCharactersNumber();
+        int foodAmount = GlobalData.getAvailableResources().getFoodAmount();
+        int ltFoodAmount = GlobalData.getAvailableResources().getLongTermFoodAmount();
         int allFoodAmount = foodAmount + ltFoodAmount;
 
         if (requiredFood > allFoodAmount) {
-            globalData.changeFoodLevel(-allFoodAmount);
+            MethodRepository.changeFoodLevel(-allFoodAmount);
             List<MainCharacter> starvingCharacters = new ArrayList<>(); // TODO: ... = chooseStarvingCharacters(requiredFood - allFoodAmount);
             starvingCharacters.forEach(character -> {
-                character.changeLivesLevel(-2);
-                globalData.decreaseMoraleAfterReducingCharacterLives(-2, character);
+                MethodRepository.changeLivesLevel(-2, character);
             });
         } else {
-            globalData.changeFoodLevel(-requiredFood);
+            MethodRepository.changeFoodLevel(-requiredFood);
+        }
+
+        if (everyoneNeedAdditionalFood) {
+            // TODO: 2018-12-11
         }
 
         // TODO: 2018-11-23 Handle option of moving the camp
 
-        IslandTile camp = globalData.getCamp();
-        if (!globalData.isShelter() && !camp.isNaturalShelter()) {
+        IslandTile camp = GlobalData.getCamp();
+        if (!GlobalData.isShelter() && !camp.isNaturalShelter()) {
             logger.info("No shelter! Everyone is spending the night under the open sky!");
-            globalData.reduceLivesLevelOfAllMainCharacters(-1);
+            MethodRepository.decreaseLivesOfAllMainCharacters(-1);
         }
 
-        boolean canStorageFood = globalData.getInventions().stream()
+        boolean canStorageFood = GlobalData.getInventions().stream()
                 .anyMatch(invention -> Arrays.asList(CELLAR/*todo Other inventions*/).contains(invention.getIdea()));
-        canStorageFood |= globalData.getTreasures().stream()
-                .anyMatch(treasure -> Arrays.asList(TREAS_BARREL, TREAS_BOXES).contains(treasure.getMystery()));
+        canStorageFood |= GlobalData.getTreasures().stream()
+                .anyMatch(treasure -> Arrays.asList(TREAS_BECZKA, TREAS_SKRZYNIE).contains(treasure.getMystery()));
 
         if (!canStorageFood) {
             logger.info("You cannot store food. All fresh food has broken.");
-            globalData.getAvailableResources().setFoodAmount(0);
+            GlobalData.getAvailableResources().setFoodAmount(0);
         }
     }
 }

@@ -1,17 +1,17 @@
 package model.scenario;
 
-import model.data.GlobalData;
-
 public class Scenario {
 
     private int id;
     private int round;
     private int allRounds;
+    private int totemCounter;
 
     public Scenario(int id, int allRounds) {
         this.id = id;
         this.allRounds = allRounds;
         this.round = 0;
+        this.totemCounter = 0;
     }
 
     public int getId() {
@@ -38,14 +38,22 @@ public class Scenario {
         this.allRounds = allRounds;
     }
 
-    public void nextRound() {
-        round += 1;
-        if (round > allRounds) {
-            // TODO: 2018-11-21 Koniec
-        }
+    public int getTotemCounter() {
+        return totemCounter;
     }
 
-    public void handleBookIcon(GlobalData globalData) {
-
+    public void setTotemCounter(int totemCounter) {
+        this.totemCounter = totemCounter;
     }
+
+//    public void nextRound() {
+//        round += 1;
+//        if (round > allRounds) {
+//            // TODO: 2018-11-21 The end
+//        }
+//    }
+//
+//    public void handleBookIcon(GlobalData globalData) {
+//
+//    }
 }

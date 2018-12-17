@@ -1,11 +1,11 @@
 package model.elements;
 
+import engine.utils.ConfigReader;
 import model.enums.elements.dices.DiceType;
 import model.enums.elements.dices.DiceWallType;
 import model.enums.elements.dices.DicesGroupType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.ConfigReader;
 
 import java.util.*;
 
@@ -87,18 +87,26 @@ public class Dices {
         resourcesAdventuresMap.put(DiceType.ADVENTURE, resourcesAdventureDiceWalls);
         resourcesWoundMap.put(DiceType.WOUND, resourcesWoundDiceWalls);
 
-        diceMap.put(WEATHER_DICES, new ArrayList<>(Arrays.asList(weatherRainMap, weatherSnowMap, weatherAnimalMap)));
-        diceMap.put(BUILDING_DICES, new ArrayList<>(Arrays.asList(buildingSuccessMap, buildingAdventuresMap, buildingWoundMap)));
-        diceMap.put(EXPLORATION_DICES, new ArrayList<>(Arrays.asList(explorationSuccessMap, explorationAdventuresMap, explorationWoundMap)));
-        diceMap.put(RESOURCES_DICES, new ArrayList<>(Arrays.asList(resourcesSuccessMap, resourcesAdventuresMap, resourcesWoundMap)));
+        diceMap.put(WEATHER_DICES, Arrays.asList(weatherRainMap, weatherSnowMap, weatherAnimalMap));
+        diceMap.put(BUILDING_DICES, Arrays.asList(buildingSuccessMap, buildingAdventuresMap, buildingWoundMap));
+        diceMap.put(EXPLORATION_DICES, Arrays.asList(explorationSuccessMap, explorationAdventuresMap, explorationWoundMap));
+        diceMap.put(RESOURCES_DICES, Arrays.asList(resourcesSuccessMap, resourcesAdventuresMap, resourcesWoundMap));
     }
 
-    public DiceWallType roll(DicesGroupType groupType, DiceType diceType) {
-        Map<DiceType, List<DiceWallType>> dice = diceMap.get(groupType).stream()
-                .filter(diceTypeListMap -> diceTypeListMap.containsKey(diceType))
-                .findFirst().get();
-
-        return dice.get(diceType).get(new Random().nextInt(6));
+    public Map<DicesGroupType, List<Map<DiceType, List<DiceWallType>>>> getDiceMap() {
+        return diceMap;
     }
+
+    public void setDiceMap(Map<DicesGroupType, List<Map<DiceType, List<DiceWallType>>>> diceMap) {
+        this.diceMap = diceMap;
+    }
+
+    //    public DiceWallType roll(DicesGroupType groupType, DiceType diceType) {
+//        Map<DiceType, List<DiceWallType>> dice = diceMap.get(groupType).stream()
+//                .filter(diceTypeListMap -> diceTypeListMap.containsKey(diceType))
+//                .findFirst().get();
+//
+//        return dice.get(diceType).get(new Random().nextInt(6));
+//    }
 
 }

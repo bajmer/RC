@@ -1,22 +1,21 @@
 package model.cards;
 
-import model.data.GlobalData;
 import model.enums.ProfessionType;
 import model.enums.cards.IdeaType;
 import model.requirements.Requirements;
 
-public class IdeaCard implements Card {
+public class IdeaCard {
     private IdeaType idea;
     private ProfessionType owner;
     private boolean initialIdea;
-    private boolean transformedToItem;
+    private boolean transformedToInvention;
     private boolean multipleUse;
 
-    public IdeaCard(IdeaType idea, ProfessionType owner, boolean initialIdea, boolean transformedToItem, boolean multipleUse) {
+    public IdeaCard(IdeaType idea, ProfessionType owner, boolean initialIdea, boolean transformedToInvention, boolean multipleUse) {
         this.idea = idea;
         this.owner = owner;
         this.initialIdea = initialIdea;
-        this.transformedToItem = transformedToItem;
+        this.transformedToInvention = transformedToInvention;
         this.multipleUse = multipleUse;
     }
 
@@ -44,12 +43,12 @@ public class IdeaCard implements Card {
         this.initialIdea = initialIdea;
     }
 
-    public boolean isTransformedToItem() {
-        return transformedToItem;
+    public boolean isTransformedToInvention() {
+        return transformedToInvention;
     }
 
-    public void setTransformedToItem(boolean transformedToItem) {
-        this.transformedToItem = transformedToItem;
+    public void setTransformedToInvention(boolean transformedToInvention) {
+        this.transformedToInvention = transformedToInvention;
     }
 
     public boolean isMultipleUse() {
@@ -66,7 +65,7 @@ public class IdeaCard implements Card {
         return requirements;
     }
 
-    public void transformIdeaToItem(GlobalData globalData) {
+    public void transformIdeaToInvention() {
 
     }
 }
